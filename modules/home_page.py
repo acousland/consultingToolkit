@@ -2,25 +2,25 @@ import streamlit as st
 
 def home_page():
     st.markdown("## Welcome to the Consulting Toolkit")
-    st.markdown("_AI-powered pain point analysis tool_")
+    st.markdown("_Tools for making your consulting life easier_")
     
     st.markdown("---")
     
     st.markdown("### Getting Started")
-    st.markdown("This toolkit helps you analyze organizational pain points and map them to capabilities. Choose from the available tools below:")
+    st.markdown("This toolkit helps you analyze organisational pain points and map them to capabilities. Choose from the available tools below:")
     
     # Create columns for a nice layout
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("#### 🔍 **Pain Point Extraction**")
-        st.markdown("Upload and analyze documents to extract specific organizational pain points.")
+        st.markdown("Upload and analyze documents to extract specific organisational pain points.")
         if st.button("Go to Pain Point Extraction", key="pain_extraction", use_container_width=True):
             st.session_state.page = "Pain Point Extraction"
             st.rerun()
         
         st.markdown("#### 🎯 **Capability Mapping**")
-        st.markdown("Map extracted pain points to organizational capabilities.")
+        st.markdown("Map extracted pain points to organisational capabilities.")
         if st.button("Go to Capability Mapping", key="capability_mapping", use_container_width=True):
             st.session_state.page = "Pain Point to Capability Mapping"
             st.rerun()
@@ -39,14 +39,3 @@ def home_page():
             st.rerun()
     
     st.markdown("---")
-    
-    st.markdown("### How to Use")
-    st.markdown("""
-    1. **Start with Pain Point Extraction** - Upload your documents and extract pain points
-    2. **Create Themes** - Group related pain points into meaningful themes
-    3. **Map to Capabilities** - Connect pain points to organizational capabilities
-    4. **Generate Descriptions** - Create detailed capability descriptions
-    """)
-    
-    st.markdown("### Tips")
-    st.info("💡 For best results, start with the Pain Point Extraction tool and work through the process sequentially.")

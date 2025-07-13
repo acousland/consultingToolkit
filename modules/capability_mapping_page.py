@@ -50,15 +50,16 @@ def capability_mapping_page():
                 pain_points_df.columns,
                 key="pain_id_col"
             )
-            pain_text_col = st.selectbox(
-                "Select Pain Point text column", 
+            pain_text_cols = st.multiselect(
+                "Select Pain Point text columns (will be concatenated)", 
                 pain_points_df.columns,
-                key="pain_text_col"
+                key="pain_text_cols",
+                help="Select one or more columns to describe the pain point (e.g., title, description, details)"
             )
             
             # Store column selections in session state (but not with widget key names)
             st.session_state['pain_columns']['id'] = pain_id_col
-            st.session_state['pain_columns']['text'] = pain_text_col
+            st.session_state['pain_columns']['text'] = pain_text_cols
     
     with col2:
         st.markdown("### ⚙️ Capabilities Spreadsheet")
@@ -84,21 +85,24 @@ def capability_mapping_page():
                 capabilities_df.columns,
                 key="cap_id_col"
             )
-            cap_text_col = st.selectbox(
-                "Select Capability text column", 
+            cap_text_cols = st.multiselect(
+                "Select Capability text columns (will be concatenated)", 
                 capabilities_df.columns,
-                key="cap_text_col"
+                key="cap_text_cols",
+                help="Select one or more columns to describe the capability (e.g., name, description, details)"
             )
             
             # Store column selections in session state (but not with widget key names)
             st.session_state['cap_columns']['id'] = cap_id_col
-            st.session_state['cap_columns']['text'] = cap_text_col
+            st.session_state['cap_columns']['text'] = cap_text_cols
     
     # Mapping section
     if (st.session_state['pain_points_df'] is not None and 
         st.session_state['capabilities_df'] is not None and
         st.session_state['pain_columns']['id'] is not None and 
-        st.session_state['cap_columns']['id'] is not None):
+        st.session_state['cap_columns']['id'] is not None and
+        st.session_state['pain_columns']['text'] and  # Check if list is not empty
+        st.session_state['cap_columns']['text']):  # Check if list is not empty
         
         st.markdown("---")
         st.markdown("### 🔗 Generate Mappings")
@@ -109,67 +113,120 @@ def capability_mapping_page():
             placeholder="e.g., Prioritize digital capabilities, focus on customer-facing solutions, consider budget constraints..."
         )
         
+        # Batch size control
+        batch_size = st.number_input(
+            'Batch size (number of pain points to process together)', 
+            min_value=1, max_value=50, value=10,
+            help="Larger batches are faster but may be less accurate. Smaller batches are more precise but slower."
+        )
+        
         if st.button("Generate AI Mappings", type="primary"):
             pain_points_df = st.session_state['pain_points_df']
             capabilities_df = st.session_state['capabilities_df']
             pain_id_col = st.session_state['pain_columns']['id']
-            pain_text_col = st.session_state['pain_columns']['text']
+            pain_text_cols = st.session_state['pain_columns']['text']
             cap_id_col = st.session_state['cap_columns']['id']
-            cap_text_col = st.session_state['cap_columns']['text']
+            cap_text_cols = st.session_state['cap_columns']['text']
             
             mappings = []
             
             with st.spinner("Generating mappings with AI..."):
                 progress_bar = st.progress(0)
+                total_pain_points = len(pain_points_df)
                 
-                for idx, pain_row in pain_points_df.iterrows():
-                    pain_id = pain_row[pain_id_col]
-                    pain_text = pain_row[pain_text_col]
+                # Process in batches
+                for batch_start in range(0, total_pain_points, batch_size):
+                    batch_end = min(batch_start + batch_size, total_pain_points)
+                    batch_df = pain_points_df.iloc[batch_start:batch_end]
                     
-                    # Create mapping prompt for this specific pain point
-                    mapping_prompt = f"""You are an expert management consultant specializing in organizational capabilities.
+                    st.write(f"Processing pain points {batch_start + 1} to {batch_end} of {total_pain_points}")
+                    
+                    # Create batch mapping prompt
+                    batch_mapping_prompt = f"""You are an expert management consultant specializing in organizational capabilities.
 
-Your task: Match the given pain point to the MOST APPROPRIATE capability from the provided list.
+Your task: Match each pain point to the MOST APPROPRIATE capability from the provided list.
 
-Pain Point to Match:
-ID: {pain_id}
-Text: {pain_text}
-
+Pain Points to Match:
+"""
+                    
+                    # Add all pain points in this batch
+                    for _, pain_row in batch_df.iterrows():
+                        pain_id = pain_row[pain_id_col]
+                        # Concatenate selected pain point text columns
+                        pain_text_parts = []
+                        for col in pain_text_cols:
+                            if pd.notna(pain_row[col]):
+                                pain_text_parts.append(str(pain_row[col]))
+                        pain_text = ' '.join(pain_text_parts)
+                        batch_mapping_prompt += f"- {pain_id}: {pain_text}\n"
+                    
+                    batch_mapping_prompt += f"""
 Available Capabilities:
 """
                     
+                    # Add all available capabilities
                     for _, cap_row in capabilities_df.iterrows():
                         cap_id = cap_row[cap_id_col]
-                        cap_text = cap_row[cap_text_col]
-                        mapping_prompt += f"- {cap_id}: {cap_text}\n"
+                        # Concatenate selected capability text columns
+                        cap_text_parts = []
+                        for col in cap_text_cols:
+                            if pd.notna(cap_row[col]):
+                                cap_text_parts.append(str(cap_row[col]))
+                        cap_text = ' '.join(cap_text_parts)
+                        batch_mapping_prompt += f"- {cap_id}: {cap_text}\n"
                     
-                    mapping_prompt += f"""
+                    batch_mapping_prompt += f"""
 Additional Context: {additional_context}
 
 Instructions:
-1. Analyze the pain point and determine which capability would best address it
+1. For each pain point, analyze and determine which capability would best address it
 2. Consider both direct solutions and preventive capabilities
-3. Choose the single most appropriate capability ID
-4. Return ONLY the capability ID (e.g., CAP001) - no explanations or additional text
+3. Choose the single most appropriate capability ID for each pain point
+4. Return your response in this exact format (one line per pain point):
+PAIN_POINT_ID -> CAPABILITY_ID
 
-Capability ID:"""
+Example format:
+PP001 -> CAP003
+PP002 -> CAP007
+PP003 -> CAP001
+
+Mappings:"""
                     
-                    # Get AI response
-                    output = model.invoke([HumanMessage(content=mapping_prompt)])
-                    mapped_capability_id = output.content.strip()
+                    # Get AI response for the batch
+                    output = model.invoke([HumanMessage(content=batch_mapping_prompt)])
+                    batch_results = output.content.strip()
                     
-                    # Clean up the response to get just the ID
-                    if ':' in mapped_capability_id:
-                        mapped_capability_id = mapped_capability_id.split(':')[-1].strip()
-                    
-                    mappings.append({
-                        'Pain_Point_ID': pain_id,
-                        'Capability_ID': mapped_capability_id,
-                        'Pain_Point_Text': pain_text
-                    })
+                    # Parse the batch results
+                    for line in batch_results.split('\n'):
+                        line = line.strip()
+                        if '->' in line:
+                            try:
+                                pain_point_id, capability_id = line.split('->')
+                                pain_point_id = pain_point_id.strip()
+                                capability_id = capability_id.strip()
+                                
+                                # Get the pain point text for reference
+                                pain_text = ""
+                                matching_rows = batch_df[batch_df[pain_id_col].astype(str) == str(pain_point_id)]
+                                if not matching_rows.empty:
+                                    # Concatenate selected pain point text columns
+                                    pain_text_parts = []
+                                    for col in pain_text_cols:
+                                        if pd.notna(matching_rows.iloc[0][col]):
+                                            pain_text_parts.append(str(matching_rows.iloc[0][col]))
+                                    pain_text = ' '.join(pain_text_parts)
+                                
+                                mappings.append({
+                                    'Pain_Point_ID': pain_point_id,
+                                    'Capability_ID': capability_id,
+                                    'Pain_Point_Text': pain_text
+                                })
+                            except ValueError:
+                                # Skip malformed lines
+                                continue
                     
                     # Update progress
-                    progress = (idx + 1) / len(pain_points_df)
+                    progress = batch_end / total_pain_points
                     progress_bar.progress(progress)
                 
                 progress_bar.progress(1.0)
@@ -177,8 +234,17 @@ Capability ID:"""
             # Create mappings dataframe
             mappings_df = pd.DataFrame(mappings)
             
-            # Add capability text for reference
-            cap_lookup = dict(zip(capabilities_df[cap_id_col], capabilities_df[cap_text_col]))
+            # Add capability text for reference (concatenate selected columns)
+            cap_lookup = {}
+            for _, cap_row in capabilities_df.iterrows():
+                cap_id = cap_row[cap_id_col]
+                cap_text_parts = []
+                for col in cap_text_cols:
+                    if pd.notna(cap_row[col]):
+                        cap_text_parts.append(str(cap_row[col]))
+                cap_text = ' '.join(cap_text_parts)
+                cap_lookup[cap_id] = cap_text
+            
             mappings_df['Capability_Text'] = mappings_df['Capability_ID'].map(cap_lookup)
             
             st.session_state['mappings_df'] = mappings_df
@@ -192,27 +258,8 @@ Capability ID:"""
             buffer.seek(0)
             
             st.download_button(
-                label="� Download Mappings as Excel",
+                label="📥 Download Mappings as Excel",
                 data=buffer.getvalue(),
                 file_name="pain_point_capability_mappings.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
-    
-    # Display previously generated mappings if they exist
-    if 'mappings_df' in st.session_state and st.session_state['mappings_df'] is not None:
-        st.markdown("---")
-        st.markdown("### 📋 Previous Mappings")
-        st.dataframe(st.session_state['mappings_df'])
-        
-        # Re-download button for previous mappings
-        buffer = BytesIO()
-        st.session_state['mappings_df'].to_excel(buffer, index=False, engine='openpyxl')
-        buffer.seek(0)
-        
-        st.download_button(
-            label="📥 Re-download Previous Mappings",
-            data=buffer.getvalue(),
-            file_name="pain_point_capability_mappings.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            key="redownload_mappings"
-        )
