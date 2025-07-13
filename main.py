@@ -8,7 +8,7 @@ from modules.pain_point_extraction_page import pain_point_extraction_page
 from modules.capability_mapping_page import capability_mapping_page
 from modules.theme_creation_page import theme_creation_page
 from modules.capability_description_page import capability_description_page
-from app_config import prompt, model, output_parser
+from app_config import model
 
 
 if openai.api_key not in st.session_state:
@@ -20,26 +20,17 @@ if 'page' not in st.session_state:
 
 st.markdown("# Consulting Toolkit", unsafe_allow_html=False, help=None)
 
-# Sidebar navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.selectbox(
-    "Choose a page:",
-    [
-        "Home",
-        "Pain Point Extraction",
-        "Pain Point Theme Creation", 
-        "Pain Point to Capability Mapping",
-        "Capability Description Generation"
-    ],
-    index=["Home", "Pain Point Extraction", "Pain Point Theme Creation", 
-           "Pain Point to Capability Mapping", "Capability Description Generation"].index(st.session_state.page)
-)
+# Hide the sidebar completely
+st.markdown("""
+<style>
+    .css-1d391kg {display: none}
+    .st-emotion-cache-1d391kg {display: none}
+    [data-testid="stSidebar"] {display: none}
+    [data-testid="collapsedControl"] {display: none}
+</style>
+""", unsafe_allow_html=True)
 
-# Update session state when dropdown changes
-if page != st.session_state.page:
-    st.session_state.page = page
-
-# Page routing
+# Page routing based on session state only
 if st.session_state.page == "Home":
     home_page()
 elif st.session_state.page == "Pain Point Extraction":

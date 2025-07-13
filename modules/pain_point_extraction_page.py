@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from io import BytesIO
 from langchain_core.messages import HumanMessage
-from app_config import prompt, model, output_parser
+from app_config import pain_point_extraction_prompt, model, comma_list_parser
 
 def pain_point_extraction_page():
     # Home button
@@ -41,10 +41,10 @@ def pain_point_extraction_page():
         prompts = st.text_input('Any additional context for the AI to consider', '')
 
         if st.button("Generate pain points", type="secondary"):
-            _input = prompt.format(additional_prompts=prompts,
+            _input = pain_point_extraction_prompt.format(additional_prompts=prompts,
                                    data=concatenated_data)
-            output = model([HumanMessage(content=_input)])
-            pain_points = output_parser.parse(output.content)
+            output = model.invoke([HumanMessage(content=_input)])
+            pain_points = comma_list_parser.parse(output.content)
             st.session_state['pain_points'] = pain_points
             st.write(pain_points)
 
