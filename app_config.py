@@ -99,30 +99,30 @@ capability_mapping_prompt = PromptTemplate(
 
 # CAPABILITY DESCRIPTION PROMPT
 capability_description_prompt = PromptTemplate(
-    template="""You are a management consultant and business architect with deep expertise in organizational capabilities. \
-    I will provide you with a list of organizational capabilities that need to be developed or improved. \
-    Your task is to create detailed, actionable descriptions for each capability.
-    
-    For each capability, provide:
-    1. **Definition**: Clear explanation of what this capability entails
-    2. **Key Components**: The main elements or sub-capabilities involved
-    3. **Maturity Levels**: Description of Basic, Intermediate, and Advanced levels
-    4. **Success Metrics**: How to measure the effectiveness of this capability
-    5. **Implementation Considerations**: Key factors for successful development
-    6. **Dependencies**: Other capabilities or resources required
-    
-    Guidelines:
-    - Focus on practical, actionable descriptions
-    - Include specific examples where relevant
-    - Consider both technical and organizational aspects
-    - Align with industry best practices
-    
-    {additional_prompts}
-    
-    Capabilities to describe:
-    {capabilities}
-    """,
-    input_variables=["additional_prompts", "capabilities"]
+    template="""
+You are a management consultant and business architect with deep expertise in organisational capabilities.
+Write a single-sentence description for each capability provided.
+
+Style guardrails
+– Use Australian English, present tense, active voice, and an Oxford comma.
+– Verb guidance
+  • Draw the opening verb(s) from: craft, create, cultivate, develop, engineer, evolve, forge, hone, pilot, pioneer, shape, steer, streamline.
+  • Use each verb no more than three times across the full output, and never twice in a row.
+– One short qualifier is allowed (e.g., “through data-driven insight”).
+– Keep each sentence ≤ 30 words.
+– Avoid any stock trio like “identify, analyse, optimise”.
+
+Example  
+Customer Insight & Analytics: The ability to uncover fresh patterns in purchasing behaviour, convert them into actionable tactics, and steer smarter investment decisions across every retail touch-point.
+
+Return the results exactly like this  
+(no bullets, no asterisks)  
+Capability Name: The ability to …
+
+Capabilities to describe:
+{capabilities}
+""",
+    input_variables=["capabilities"]
 )
 
 # Legacy exports for backward compatibility
