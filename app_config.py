@@ -11,29 +11,28 @@ comma_format_instructions = comma_list_parser.get_format_instructions()
 
 # PAIN POINT EXTRACTION PROMPT
 pain_point_extraction_prompt = PromptTemplate(
-    template="""You are a management consultant with an MBA and a PhD in organisational psychology. \
-    I'm going to present you with an extract of pain points from organizational documents or feedback. \
-    I want you to extract each individual painpoint and return them as a list of entities. \
-    I want you to be very specific. Sometimes there will be more than one pain point in a single line.
-    Extract what the pain point is for the organisation. Be very specific about the pain point.
-    Each needs to be a proper sentence and it needs to tie to either an organisational pain point or a customer pain point.
-    
-    Guidelines:
-    - Focus on actionable problems, not symptoms
-    - Identify both internal operational issues and external customer-facing problems
-    - Be specific about the impact or consequence of each pain point
-    - Separate compound problems into individual pain points
-    
-    {additional_prompts}
-    
-    Format them according to: {format_instructions}
-    Make sure you only return a single entity per list item.
-    
-    The values are as follows:
-    {data}
-    """,
-    input_variables=["additional_prompts", "data"],
-    partial_variables={"format_instructions": comma_format_instructions}
+    template="""You are a senior management consultant (MBA) and organisational psychologist (PhD).
+Extract every distinct pain point from the text and return them as clear, single sentences.
+
+Requirements:
+- Each pain point should be one complete, standalone sentence
+- Use Australian English with proper grammar
+- Focus on the core problem or challenge
+- Be specific about what the pain point is
+- Keep each sentence concise but descriptive
+- Do not include metrics or specific numbers unless essential to understanding the problem
+
+Format: Return only a simple list, one pain point per line, like this:
+Social media engagement rates are consistently below industry benchmarks across all platforms.
+Website conversion rates are underperforming expected targets.
+Customer data access is limited by system restrictions.
+
+{additional_prompts}
+
+Text to analyze:
+{data}
+""",
+    input_variables=["additional_prompts", "data"]
 )
 
 # THEME CREATION PROMPT
@@ -108,9 +107,9 @@ Style guardrails
 – Verb guidance
   • Draw the opening verb(s) from: craft, create, cultivate, develop, engineer, evolve, forge, hone, pilot, pioneer, shape, steer, streamline.
   • Use each verb no more than three times across the full output, and never twice in a row.
-– One short qualifier is allowed (e.g., “through data-driven insight”).
+– One short qualifier is allowed (e.g., "through data-driven insight").
 – Keep each sentence ≤ 30 words.
-– Avoid any stock trio like “identify, analyse, optimise”.
+– Avoid any stock trio like "identify, analyse, optimise".
 
 Example  
 Customer Insight & Analytics: The ability to uncover fresh patterns in purchasing behaviour, convert them into actionable tactics, and steer smarter investment decisions across every retail touch-point.
