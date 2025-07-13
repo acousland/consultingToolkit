@@ -1,6 +1,8 @@
 import streamlit as st
+import pandas as pd
+from io import BytesIO
 from langchain_core.messages import HumanMessage
-from app_config import capability_mapping_prompt, model
+from app_config import model
 
 def capability_mapping_page():
     # Home button
@@ -9,66 +11,208 @@ def capability_mapping_page():
         st.rerun()
     
     st.markdown("## Pain Point to Capability Mapping")
+    st.markdown("Upload pain points and capabilities spreadsheets to create ID-based mappings.")
     
-    # Check if pain points or themes exist in session state
-    has_pain_points = 'pain_points' in st.session_state and st.session_state['pain_points']
-    has_themes = 'themes' in st.session_state and st.session_state['themes']
+    # Create two columns for side-by-side uploads
+    col1, col2 = st.columns(2)
     
-    if has_pain_points or has_themes:
-        # Input selection
-        input_choice = st.radio(
-            "What would you like to map to capabilities?",
-            ["Pain Points", "Themes"] if has_themes else ["Pain Points"],
-            help="Choose whether to map individual pain points or grouped themes to capabilities"
+    # Initialize session state for dataframes
+    if 'pain_points_df' not in st.session_state:
+        st.session_state['pain_points_df'] = None
+    if 'capabilities_df' not in st.session_state:
+        st.session_state['capabilities_df'] = None
+    if 'pain_columns' not in st.session_state:
+        st.session_state['pain_columns'] = {'id': None, 'text': None}
+    if 'cap_columns' not in st.session_state:
+        st.session_state['cap_columns'] = {'id': None, 'text': None}
+    
+    with col1:
+        st.markdown("### 📋 Pain Points Spreadsheet")
+        pain_points_file = st.file_uploader(
+            "Upload Pain Points Excel file", 
+            type=['xlsx', 'xls', 'xlsm'],
+            key="pain_points_upload"
         )
         
-        if input_choice == "Pain Points" and has_pain_points:
-            st.markdown("### Pain Points to Map")
-            pain_points_list = st.session_state['pain_points']
+        if pain_points_file is not None:
+            # Load pain points file
+            xls = pd.ExcelFile(pain_points_file)
+            pain_sheet = st.selectbox("Select sheet for pain points", xls.sheet_names, key="pain_sheet")
+            pain_points_df = pd.read_excel(xls, sheet_name=pain_sheet)
+            st.session_state['pain_points_df'] = pain_points_df
             
-            # Display current pain points
-            for i, point in enumerate(pain_points_list, 1):
-                st.write(f"{i}. {point}")
+            st.write("**Preview:**")
+            st.dataframe(pain_points_df.head())
             
-            input_data = "\n".join([f"- {point}" for point in pain_points_list])
+            # Column selection for pain points
+            pain_id_col = st.selectbox(
+                "Select Pain Point ID column", 
+                pain_points_df.columns,
+                key="pain_id_col"
+            )
+            pain_text_col = st.selectbox(
+                "Select Pain Point text column", 
+                pain_points_df.columns,
+                key="pain_text_col"
+            )
             
-        elif input_choice == "Themes" and has_themes:
-            st.markdown("### Themes to Map")
-            st.markdown(st.session_state['themes'])
-            input_data = st.session_state['themes']
-        
-        st.markdown("---")
-        
-        # Additional prompts input
-        additional_prompts = st.text_area(
-            "Additional context for capability mapping:", 
-            placeholder="e.g., Focus on digital capabilities, prioritize customer-facing capabilities, consider budget constraints..."
+            # Store column selections in session state (but not with widget key names)
+            st.session_state['pain_columns']['id'] = pain_id_col
+            st.session_state['pain_columns']['text'] = pain_text_col
+    
+    with col2:
+        st.markdown("### ⚙️ Capabilities Spreadsheet")
+        capabilities_file = st.file_uploader(
+            "Upload Capabilities Excel file", 
+            type=['xlsx', 'xls', 'xlsm'],
+            key="capabilities_upload"
         )
         
-        # Generate capability mapping button
-        if st.button("Generate Capability Mapping", type="primary"):
-            with st.spinner("Mapping to organizational capabilities..."):
-                # Generate prompt
-                _input = capability_mapping_prompt.format(
-                    additional_prompts=additional_prompts,
-                    input_data=input_data
-                )
-                
-                # Get AI response
-                output = model.invoke([HumanMessage(content=_input)])
-                capability_mapping = output.content
-                
-                # Store mapping in session state
-                st.session_state['capability_mapping'] = capability_mapping
-                
-                # Display mapping
-                st.markdown("### Capability Mapping Results")
-                st.markdown(capability_mapping)
-    else:
-        st.info("🔍 No pain points or themes found. Please run the Pain Point Extraction tool first.")
+        if capabilities_file is not None:
+            # Load capabilities file
+            xls = pd.ExcelFile(capabilities_file)
+            cap_sheet = st.selectbox("Select sheet for capabilities", xls.sheet_names, key="cap_sheet")
+            capabilities_df = pd.read_excel(xls, sheet_name=cap_sheet)
+            st.session_state['capabilities_df'] = capabilities_df
+            
+            st.write("**Preview:**")
+            st.dataframe(capabilities_df.head())
+            
+            # Column selection for capabilities
+            cap_id_col = st.selectbox(
+                "Select Capability ID column", 
+                capabilities_df.columns,
+                key="cap_id_col"
+            )
+            cap_text_col = st.selectbox(
+                "Select Capability text column", 
+                capabilities_df.columns,
+                key="cap_text_col"
+            )
+            
+            # Store column selections in session state (but not with widget key names)
+            st.session_state['cap_columns']['id'] = cap_id_col
+            st.session_state['cap_columns']['text'] = cap_text_col
     
-    # Display previously generated mapping if it exists
-    if 'capability_mapping' in st.session_state and st.session_state['capability_mapping']:
+    # Mapping section
+    if (st.session_state['pain_points_df'] is not None and 
+        st.session_state['capabilities_df'] is not None and
+        st.session_state['pain_columns']['id'] is not None and 
+        st.session_state['cap_columns']['id'] is not None):
+        
         st.markdown("---")
-        st.markdown("### Previously Generated Capability Mapping")
-        st.markdown(st.session_state['capability_mapping'])
+        st.markdown("### 🔗 Generate Mappings")
+        
+        # Additional context input
+        additional_context = st.text_area(
+            "Additional context for AI mapping (optional):",
+            placeholder="e.g., Prioritize digital capabilities, focus on customer-facing solutions, consider budget constraints..."
+        )
+        
+        if st.button("Generate AI Mappings", type="primary"):
+            pain_points_df = st.session_state['pain_points_df']
+            capabilities_df = st.session_state['capabilities_df']
+            pain_id_col = st.session_state['pain_columns']['id']
+            pain_text_col = st.session_state['pain_columns']['text']
+            cap_id_col = st.session_state['cap_columns']['id']
+            cap_text_col = st.session_state['cap_columns']['text']
+            
+            mappings = []
+            
+            with st.spinner("Generating mappings with AI..."):
+                progress_bar = st.progress(0)
+                
+                for idx, pain_row in pain_points_df.iterrows():
+                    pain_id = pain_row[pain_id_col]
+                    pain_text = pain_row[pain_text_col]
+                    
+                    # Create mapping prompt for this specific pain point
+                    mapping_prompt = f"""You are an expert management consultant specializing in organizational capabilities.
+
+Your task: Match the given pain point to the MOST APPROPRIATE capability from the provided list.
+
+Pain Point to Match:
+ID: {pain_id}
+Text: {pain_text}
+
+Available Capabilities:
+"""
+                    
+                    for _, cap_row in capabilities_df.iterrows():
+                        cap_id = cap_row[cap_id_col]
+                        cap_text = cap_row[cap_text_col]
+                        mapping_prompt += f"- {cap_id}: {cap_text}\n"
+                    
+                    mapping_prompt += f"""
+Additional Context: {additional_context}
+
+Instructions:
+1. Analyze the pain point and determine which capability would best address it
+2. Consider both direct solutions and preventive capabilities
+3. Choose the single most appropriate capability ID
+4. Return ONLY the capability ID (e.g., CAP001) - no explanations or additional text
+
+Capability ID:"""
+                    
+                    # Get AI response
+                    output = model.invoke([HumanMessage(content=mapping_prompt)])
+                    mapped_capability_id = output.content.strip()
+                    
+                    # Clean up the response to get just the ID
+                    if ':' in mapped_capability_id:
+                        mapped_capability_id = mapped_capability_id.split(':')[-1].strip()
+                    
+                    mappings.append({
+                        'Pain_Point_ID': pain_id,
+                        'Capability_ID': mapped_capability_id,
+                        'Pain_Point_Text': pain_text
+                    })
+                    
+                    # Update progress
+                    progress = (idx + 1) / len(pain_points_df)
+                    progress_bar.progress(progress)
+                
+                progress_bar.progress(1.0)
+            
+            # Create mappings dataframe
+            mappings_df = pd.DataFrame(mappings)
+            
+            # Add capability text for reference
+            cap_lookup = dict(zip(capabilities_df[cap_id_col], capabilities_df[cap_text_col]))
+            mappings_df['Capability_Text'] = mappings_df['Capability_ID'].map(cap_lookup)
+            
+            st.session_state['mappings_df'] = mappings_df
+            
+            st.markdown("### 📊 Mapping Results")
+            st.dataframe(mappings_df)
+            
+            # Download button
+            buffer = BytesIO()
+            mappings_df.to_excel(buffer, index=False, engine='openpyxl')
+            buffer.seek(0)
+            
+            st.download_button(
+                label="� Download Mappings as Excel",
+                data=buffer.getvalue(),
+                file_name="pain_point_capability_mappings.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+    
+    # Display previously generated mappings if they exist
+    if 'mappings_df' in st.session_state and st.session_state['mappings_df'] is not None:
+        st.markdown("---")
+        st.markdown("### 📋 Previous Mappings")
+        st.dataframe(st.session_state['mappings_df'])
+        
+        # Re-download button for previous mappings
+        buffer = BytesIO()
+        st.session_state['mappings_df'].to_excel(buffer, index=False, engine='openpyxl')
+        buffer.seek(0)
+        
+        st.download_button(
+            label="📥 Re-download Previous Mappings",
+            data=buffer.getvalue(),
+            file_name="pain_point_capability_mappings.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            key="redownload_mappings"
+        )
