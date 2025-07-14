@@ -1,11 +1,6 @@
 import streamlit as st
 
 def home_page():
-    st.markdown("_Tools for making your consulting life easier_")
-    
-    st.markdown("---")
-    
-    st.markdown("## Getting Started")
     st.markdown("""
     This consulting toolkit is organised into four specialised toolkits, each designed to address specific aspects 
     of organisational analysis, capability development, and engagement planning. Choose the toolkit that matches your current consulting needs.

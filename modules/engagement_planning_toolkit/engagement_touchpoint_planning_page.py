@@ -9,26 +9,26 @@ def engagement_touchpoint_planning_page():
     breadcrumb_container = st.container()
     
     with breadcrumb_container:
-        col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 0.2, 1.5, 0.2, 1.5, 0.2, 1])
+        col1, col2, col3, col4, col5 = st.columns([1.2, 0.2, 2.5, 0.2, 3])
         
         with col1:
-            if st.button("🏠 Home", key="nav_home_etp", use_container_width=True):
+            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
                 st.session_state.page = "Home"
                 st.rerun()
         
         with col2:
-            st.markdown("<div style='text-align: center; padding-top: 8px;'>→</div>", unsafe_allow_html=True)
+            st.markdown("**›**")
         
         with col3:
-            if st.button("📅 Engagement Planning Toolkit", key="nav_ep_toolkit_etp", use_container_width=True):
+            if st.button("📅 Engagement Planning Toolkit", key="breadcrumb_toolkit", help="Go to Engagement Planning Toolkit"):
                 st.session_state.page = "Engagement Planning Toolkit"
                 st.rerun()
         
         with col4:
-            st.markdown("<div style='text-align: center; padding-top: 8px;'>→</div>", unsafe_allow_html=True)
+            st.markdown("**›**")
         
         with col5:
-            st.markdown("<div style='background-color: #e6f3ff; padding: 8px; border-radius: 4px; text-align: center;'><strong>📞 Touchpoint Planning</strong></div>", unsafe_allow_html=True)
+            st.markdown("**📞 Engagement Touchpoint Planning**")
     
     st.markdown("---")
     
@@ -134,7 +134,7 @@ def engagement_touchpoint_planning_page():
         )
     
     # Process button
-    if st.button("🔄 Generate Touchpoint Plan", type="primary", use_container_width=True):
+    if st.button("🔄 Generate Touchpoint Plan", use_container_width=True):
         if not stakeholder_input.strip() or not objectives_input.strip():
             st.error("❌ Please provide stakeholder information and engagement objectives to generate a touchpoint plan.")
         else:

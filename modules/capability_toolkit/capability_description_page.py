@@ -196,23 +196,3 @@ def capability_description_page():
     
     st.markdown("---")
     
-    # Display previously generated descriptions if they exist
-    if 'capability_results_df' in st.session_state and not st.session_state['capability_results_df'].empty:
-        st.markdown("---")
-        st.markdown("### Previously Generated Descriptions")
-        st.dataframe(st.session_state['capability_results_df'])
-        
-        # Re-create download for previous results
-        output_buffer = BytesIO()
-        with pd.ExcelWriter(output_buffer, engine='openpyxl') as writer:
-            st.session_state['capability_results_df'].to_excel(writer, sheet_name='Capability Descriptions', index=False)
-        
-        output_buffer.seek(0)
-        
-        st.download_button(
-            label="📥 Download Previous Results as Excel",
-            data=output_buffer.getvalue(),
-            file_name="capability_descriptions.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            key="download_previous_results"
-        )

@@ -5,25 +5,24 @@ def engagement_planning_toolkit_page():
     breadcrumb_container = st.container()
     
     with breadcrumb_container:
-        col1, col2, col3, col4, col5 = st.columns([1, 0.3, 1, 0.3, 1])
+        col1, col2, col3 = st.columns([1.2, 0.2, 4])
         
         with col1:
-            if st.button("🏠 Home", key="nav_home_ep", use_container_width=True):
+            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
                 st.session_state.page = "Home"
                 st.rerun()
         
         with col2:
-            st.markdown("<div style='text-align: center; padding-top: 8px;'>→</div>", unsafe_allow_html=True)
+            st.markdown("**›**")
         
         with col3:
-            st.markdown("<div style='background-color: #e6f3ff; padding: 8px; border-radius: 4px; text-align: center;'><strong>📅 Engagement Planning Toolkit</strong></div>", unsafe_allow_html=True)
+            st.markdown("**📅 Engagement Planning Toolkit**")
     
     st.markdown("---")
     
     # Toolkit Overview
     st.markdown("# 📅 Engagement Planning Toolkit")
-    st.markdown("**Plan and structure client engagements with precision and professionalism**")
-    
+  
     st.markdown("""
     The Engagement Planning Toolkit helps consultants design comprehensive engagement approaches, 
     plan meaningful touchpoints, and structure effective client communication strategies. Whether you're 
@@ -57,23 +56,4 @@ def engagement_planning_toolkit_page():
                 st.rerun()
     
     st.markdown("---")
-    
-    # Cross-navigation to other toolkits
-    st.markdown("## 🔗 Explore Other Toolkits")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        if st.button("🔍 Pain Point Toolkit", key="nav_to_pain_point_ep", use_container_width=True):
-            st.session_state.page = "Pain Point Toolkit"
-            st.rerun()
-    
-    with col2:
-        if st.button("📝 Capability Toolkit", key="nav_to_capability_ep", use_container_width=True):
-            st.session_state.page = "Capability Toolkit"
-            st.rerun()
-    
-    with col3:
-        if st.button("🏗️ Applications Toolkit", key="nav_to_applications_ep", use_container_width=True):
-            st.session_state.page = "Applications Toolkit"
-            st.rerun()
+   

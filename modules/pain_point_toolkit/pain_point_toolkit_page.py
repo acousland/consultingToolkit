@@ -21,11 +21,7 @@ def pain_point_toolkit_page():
     st.markdown("---")
     
     st.markdown("# 🔍 Pain Point Toolkit")
-    st.markdown("_Identify, categorise, and map organisational challenges_")
-    
-    st.markdown("---")
-    
-    st.markdown("### Overview")
+
     st.markdown("""
     The Pain Point Toolkit provides a comprehensive workflow for extracting, categorising, and mapping organisational challenges. 
     Use these tools in sequence to transform raw qualitative data into actionable insights for strategic planning.
@@ -33,101 +29,112 @@ def pain_point_toolkit_page():
     
     st.markdown("---")
     
-    # Tool 1: Pain Point Extraction
-    st.markdown("## 🔍 **1. Pain Point Extraction**")
-    st.markdown("""
-    **Extract organisational pain points from text data with AI analysis.**
+    # Tool Selection
+    st.markdown("## 🛠️ Available Tools")
     
-    • Upload Excel/CSV files with qualitative data
-    • Select multiple columns for comprehensive analysis  
-    • AI processes data in chunks to handle large datasets
-    • Returns clean, single-sentence pain points ready for analysis
-    • Download results as Excel for further processing
-    """)
-    if st.button("Go to Pain Point Extraction", key="pain_extraction", use_container_width=True):
-        st.session_state.page = "Pain Point Extraction"
-        st.rerun()
+    # Tool 1: Pain Point Extraction
+    with st.container():
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown("### 1. 🔍 Pain Point Extraction")
+            st.markdown("""
+            Extract organisational pain points from text data with AI analysis.
+            
+            • Upload text data from surveys, interviews, or feedback forms
+            • AI identifies and extracts specific pain points and challenges
+            • Chunked processing to handle large text volumes
+            • Results include pain point descriptions and context
+            • Download extracted pain points as Excel for further analysis
+            
+            **Perfect for:** Consultants analysing qualitative feedback, survey responses, 
+            and stakeholder interview data to identify organisational challenges.
+            """)
+        
+        with col2:
+            if st.button("Launch Tool", key="launch_pain_extraction", use_container_width=True, type="primary"):
+                st.session_state.page = "Pain Point Extraction"
+                st.rerun()
     
     st.markdown("---")
     
-    # Tool 2: Theme Creation  
-    st.markdown("## 🗂️ **2. Theme & Perspective Mapping**")
-    st.markdown("""
-    **Categorise pain points into predefined themes and organisational perspectives.**
-    
-    • Upload pain points with ID and description columns
-    • AI maps each pain point to 20 predefined themes (e.g., Technology Limitations, Manual Processes)
-    • AI assigns organisational perspectives (Process, People, Technology, etc.)
-    • Batch processing for efficient analysis of large datasets
-    • Distribution analytics show theme and perspective breakdowns
-    • Download comprehensive mapping results as Excel
-    """)
-    if st.button("Go to Theme & Perspective Mapping", key="theme_creation", use_container_width=True):
-        st.session_state.page = "Pain Point Theme Creation"
-        st.rerun()
+    # Tool 2: Theme & Perspective Mapping
+    with st.container():
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown("### 2. 🗂️ Theme & Perspective Mapping")
+            st.markdown("""
+            Categorise pain points into predefined themes and organisational perspectives.
+            
+            • Upload extracted pain points with ID tracking
+            • AI maps pain points to predefined themes and perspectives
+            • Configurable themes including Technology, Process, Culture, and Strategy
+            • Multiple perspectives: People, Process, Technology, External factors
+            • Batch processing for large datasets
+            • Download categorised results with theme and perspective assignments
+            
+            **Perfect for:** Strategy consultants and change managers organising pain points 
+            into actionable categories for targeted intervention planning.
+            """)
+        
+        with col2:
+            if st.button("Launch Tool", key="launch_theme_creation", use_container_width=True, type="primary"):
+                st.session_state.page = "Pain Point Theme Creation"
+                st.rerun()
     
     st.markdown("---")
     
     # Tool 3: Pain Point Impact Estimation
-    st.markdown("## 📊 **3. Pain Point Impact Estimation**")
-    st.markdown("""
-    **Assess the business impact of identified pain points using AI analysis.**
-    
-    • Upload Excel/CSV files with pain point data
-    • Select ID column and description column(s)
-    • Provide business context for accurate impact assessment
-    • AI classifies each pain point as HIGH, MEDIUM, or LOW impact
-    • Considers revenue, operations, customer satisfaction, and compliance factors
-    • Download comprehensive impact assessment results as Excel
-    """)
-    if st.button("Go to Pain Point Impact Estimation", key="impact_estimation", use_container_width=True):
-        st.session_state.page = "Pain Point Impact Estimation"
-        st.rerun()
+    with st.container():
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown("### 3. 📊 Pain Point Impact Estimation")
+            st.markdown("""
+            Assess the business impact of identified pain points using AI analysis.
+            
+            • Upload pain points with descriptive information
+            • AI evaluates impact across multiple business dimensions
+            • Considers revenue, operations, customer satisfaction, and compliance factors
+            • Impact levels: High, Medium, Low with detailed reasoning
+            • Optional business context for more accurate assessments
+            • Download comprehensive impact assessment results as Excel
+            
+            **Perfect for:** Business analysts and project managers prioritising pain points 
+            based on potential business impact and strategic importance.
+            """)
+        
+        with col2:
+            if st.button("Launch Tool", key="launch_impact_estimation", use_container_width=True, type="primary"):
+                st.session_state.page = "Pain Point Impact Estimation"
+                st.rerun()
     
     st.markdown("---")
     
     # Tool 4: Capability Mapping
-    st.markdown("## 🎯 **4. Capability Mapping**")
-    st.markdown("""
-    **Map pain points to organisational capabilities for strategic planning.**
-    
-    • Upload separate spreadsheets for pain points and capabilities
-    • Select ID columns and multiple descriptive text columns
-    • AI matches each pain point to the most appropriate capability
-    • Batch processing with configurable batch sizes for performance
-    • Results include pain point IDs mapped to capability IDs
-    • Download mapping table for integration with strategic planning tools
-    """)
-    if st.button("Go to Capability Mapping", key="capability_mapping", use_container_width=True):
-        st.session_state.page = "Pain Point to Capability Mapping"
-        st.rerun()
-    
-    st.markdown("---")
-    
-    st.markdown("### 💡 **Suggested Workflow**")
-    st.markdown("""
-    1. **Pain Point Extraction** → Extract challenges from qualitative data
-    2. **Theme & Perspective Mapping** → Categorise and understand patterns
-    3. **Pain Point Impact Estimation** → Assess business impact and prioritise
-    4. **Capability Mapping** → Connect pain points with required capabilities
-    """)
-    
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        if st.button("← Back to Main Menu", key="back_to_main_from_pain", use_container_width=True):
-            st.session_state.page = "Home"
-            st.rerun()
-    with col2:
-        if st.button("📝 Capability Toolkit", key="to_capability_toolkit", use_container_width=True):
-            st.session_state.page = "Capability Toolkit"
-            st.rerun()
-    with col3:
-        if st.button("🏗️ Applications Toolkit", key="to_applications_toolkit", use_container_width=True):
-            st.session_state.page = "Applications Toolkit"
-            st.rerun()
-    with col4:
-        if st.button("📅 Engagement Planning", key="to_engagement_toolkit", use_container_width=True):
-            st.session_state.page = "Engagement Planning Toolkit"
-            st.rerun()
+    with st.container():
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown("### 4. 🎯 Capability Mapping")
+            st.markdown("""
+            Map pain points to organisational capabilities for strategic planning.
+            
+            • Upload separate spreadsheets for pain points and capabilities
+            • Select ID columns and multiple descriptive text columns
+            • AI matches each pain point to the most appropriate capability
+            • Batch processing with configurable batch sizes for performance
+            • Results include pain point IDs mapped to capability IDs
+            • Download mapping table for integration with strategic planning tools
+            
+            **Perfect for:** Enterprise architects and strategy consultants connecting 
+            organisational challenges with required capabilities for transformation planning.
+            """)
+        
+        with col2:
+            if st.button("Launch Tool", key="launch_capability_mapping", use_container_width=True, type="primary"):
+                st.session_state.page = "Pain Point to Capability Mapping"
+                st.rerun()
     
     st.markdown("---")
