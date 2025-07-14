@@ -1,7 +1,6 @@
 import streamlit as st
 
 def home_page():
-    st.markdown("# Welcome to the Consulting Toolkit")
     st.markdown("_Tools for making your consulting life easier_")
     
     st.markdown("---")
@@ -29,9 +28,10 @@ def home_page():
         **Tools included:**
         • Pain Point Extraction
         • Theme & Perspective Mapping  
+        • Pain Point Impact Estimation
         • Capability Mapping
         
-        **Typical workflow:** Extract → Categorise → Map to Capabilities
+        **Typical workflow:** Extract → Categorise → Assess Impact → Map to Capabilities
         """)
         
         if st.button("Enter Pain Point Toolkit", key="enter_pain_point_toolkit", use_container_width=True, type="primary"):
@@ -52,6 +52,9 @@ def home_page():
         
         **Typical workflow:** Generate Professional Descriptions → Integrate with Strategic Planning
         """)
+        
+        # Add spacing to match the other column content height
+        st.markdown("<br><br>", unsafe_allow_html=True)
         
         if st.button("Enter Capability Toolkit", key="enter_capability_toolkit", use_container_width=True, type="primary"):
             st.session_state.page = "Capability Toolkit"

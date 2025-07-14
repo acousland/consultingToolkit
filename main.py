@@ -10,6 +10,7 @@ from modules.pain_point_extraction_page import pain_point_extraction_page
 from modules.capability_mapping_page import capability_mapping_page
 from modules.theme_creation_page import theme_creation_page
 from modules.capability_description_page import capability_description_page
+from modules.pain_point_impact_estimation_page import pain_point_impact_estimation_page
 from app_config import model
 
 
@@ -45,5 +46,7 @@ elif st.session_state.page == "Pain Point Theme Creation":
     theme_creation_page()
 elif st.session_state.page == "Pain Point to Capability Mapping":
     capability_mapping_page()
+elif st.session_state.page == "Pain Point Impact Estimation":
+    pain_point_impact_estimation_page()
 elif st.session_state.page == "Capability Description Generation":
     capability_description_page()

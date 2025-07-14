@@ -124,6 +124,39 @@ Capabilities to describe:
     input_variables=["capabilities"]
 )
 
+# REVISED PAIN-POINT IMPACT ESTIMATION PROMPT
+pain_point_impact_estimation_prompt = PromptTemplate(
+    template="""
+You are a senior business analyst specialising in enterprise-level impact assessment.
+Evaluate each pain point **only** in terms of its likely effect on:
+1. The organisation’s declared strategic priorities, and
+2. Profitability (EBITDA or net margin) over the next 12–24 months.
+
+{context_section}
+
+**Classification rules**
+
+- High – Materially jeopardises at least one strategic priority **or** is plausibly
+  expected to reduce profit by ~2 percent or more (e.g., lost revenue, increased cost,
+  regulatory penalties). Requires immediate executive attention.
+
+- Medium – Has a clear but limited influence on a strategic priority **or** could move
+  profit by roughly 0.5 – 2 percent. Worth addressing, but not urgent at C-suite level.
+
+- Low – Little or no measurable influence on strategic priorities and unlikely to
+  shift profit by more than ~0.5 percent. Improvements are discretionary or cosmetic.
+
+If evidence is ambiguous, err toward the lower category.
+
+Respond with **only** the impact level (High, Medium, or Low) for each pain point,
+in the order provided. {context_instruction}
+
+Pain points to assess:
+{pain_points}
+""",
+    input_variables=["context_section", "context_instruction", "pain_points"]
+)
+
 # Legacy exports for backward compatibility
 output_parser = comma_list_parser
 format_instructions = comma_format_instructions

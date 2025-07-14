@@ -68,8 +68,26 @@ def pain_point_toolkit_page():
     
     st.markdown("---")
     
-    # Tool 3: Capability Mapping
-    st.markdown("## 🎯 **3. Capability Mapping**")
+    # Tool 3: Pain Point Impact Estimation
+    st.markdown("## 📊 **3. Pain Point Impact Estimation**")
+    st.markdown("""
+    **Assess the business impact of identified pain points using AI analysis.**
+    
+    • Upload Excel/CSV files with pain point data
+    • Select ID column and description column(s)
+    • Provide business context for accurate impact assessment
+    • AI classifies each pain point as HIGH, MEDIUM, or LOW impact
+    • Considers revenue, operations, customer satisfaction, and compliance factors
+    • Download comprehensive impact assessment results as Excel
+    """)
+    if st.button("Go to Pain Point Impact Estimation", key="impact_estimation", use_container_width=True):
+        st.session_state.page = "Pain Point Impact Estimation"
+        st.rerun()
+    
+    st.markdown("---")
+    
+    # Tool 4: Capability Mapping
+    st.markdown("## 🎯 **4. Capability Mapping**")
     st.markdown("""
     **Map pain points to organisational capabilities for strategic planning.**
     
@@ -90,7 +108,8 @@ def pain_point_toolkit_page():
     st.markdown("""
     1. **Pain Point Extraction** → Extract challenges from qualitative data
     2. **Theme & Perspective Mapping** → Categorise and understand patterns
-    3. **Capability Mapping** → Connect pain points with required capabilities
+    3. **Pain Point Impact Estimation** → Assess business impact and prioritise
+    4. **Capability Mapping** → Connect pain points with required capabilities
     """)
     
     col1, col2 = st.columns(2)
