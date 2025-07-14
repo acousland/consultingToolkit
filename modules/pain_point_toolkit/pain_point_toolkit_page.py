@@ -112,14 +112,22 @@ def pain_point_toolkit_page():
     4. **Capability Mapping** → Connect pain points with required capabilities
     """)
     
-    col1, col2 = st.columns(2)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
         if st.button("← Back to Main Menu", key="back_to_main_from_pain", use_container_width=True):
             st.session_state.page = "Home"
             st.rerun()
     with col2:
-        if st.button("Go to Capability Toolkit →", key="to_capability_toolkit", use_container_width=True):
+        if st.button("📝 Capability Toolkit", key="to_capability_toolkit", use_container_width=True):
             st.session_state.page = "Capability Toolkit"
+            st.rerun()
+    with col3:
+        if st.button("🏗️ Applications Toolkit", key="to_applications_toolkit", use_container_width=True):
+            st.session_state.page = "Applications Toolkit"
+            st.rerun()
+    with col4:
+        if st.button("📅 Engagement Planning", key="to_engagement_toolkit", use_container_width=True):
+            st.session_state.page = "Engagement Planning Toolkit"
             st.rerun()
     
     st.markdown("---")

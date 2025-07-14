@@ -67,14 +67,22 @@ def capability_toolkit_page():
     • Maintain consistent terminology across both toolkits for seamless integration
     """)
     
-    col1, col2 = st.columns(2)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
         if st.button("← Back to Main Menu", key="back_to_main_from_capability", use_container_width=True):
             st.session_state.page = "Home"
             st.rerun()
     with col2:
-        if st.button("Go to Pain Point Toolkit →", key="to_pain_point_toolkit", use_container_width=True):
+        if st.button("🔍 Pain Point Toolkit", key="to_pain_point_toolkit", use_container_width=True):
             st.session_state.page = "Pain Point Toolkit"
+            st.rerun()
+    with col3:
+        if st.button("🏗️ Applications Toolkit", key="to_applications_toolkit", use_container_width=True):
+            st.session_state.page = "Applications Toolkit"
+            st.rerun()
+    with col4:
+        if st.button("📅 Engagement Planning", key="to_engagement_toolkit_cap", use_container_width=True):
+            st.session_state.page = "Engagement Planning Toolkit"
             st.rerun()
     
     st.markdown("---")
