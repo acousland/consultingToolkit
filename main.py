@@ -15,6 +15,8 @@ from modules.pain_point_toolkit.pain_point_impact_estimation_page import pain_po
 from modules.applications_toolkit.application_capability_mapping_page import application_capability_mapping_page
 from modules.engagement_planning_toolkit.engagement_planning_toolkit_page import engagement_planning_toolkit_page
 from modules.engagement_planning_toolkit.engagement_touchpoint_planning_page import engagement_touchpoint_planning_page
+from modules.strategy_motivations_toolkit.strategy_motivations_toolkit_page import strategy_motivations_toolkit_page
+from modules.strategy_motivations_toolkit.strategy_capability_mapping_page import strategy_capability_mapping_page
 from app_config import model
 
 
@@ -44,12 +46,12 @@ elif st.session_state.page == "Pain Point Toolkit":
     pain_point_toolkit_page()
 elif st.session_state.page == "Capability Toolkit":
     capability_toolkit_page()
-elif st.session_state.page == "Capability Tools":
-    capability_tools_page()
 elif st.session_state.page == "Applications Toolkit":
     applications_toolkit_page()
 elif st.session_state.page == "Engagement Planning Toolkit":
     engagement_planning_toolkit_page()
+elif st.session_state.page == "Strategy and Motivations Toolkit":
+    strategy_motivations_toolkit_page()
 elif st.session_state.page == "Pain Point Extraction":
     pain_point_extraction_page()
 elif st.session_state.page == "Pain Point Theme Creation":
@@ -64,3 +66,5 @@ elif st.session_state.page == "Engagement Touchpoint Planning":
     engagement_touchpoint_planning_page()
 elif st.session_state.page == "Capability Description Generation":
     capability_description_page()
+elif st.session_state.page == "Strategy to Capability Mapping":
+    strategy_capability_mapping_page()

@@ -2,14 +2,14 @@ import streamlit as st
 
 def home_page():
     st.markdown("""
-    This consulting toolkit is organised into four specialised toolkits, each designed to address specific aspects 
-    of organisational analysis, capability development, and engagement planning. Choose the toolkit that matches your current consulting needs.
+    This consulting toolkit is organised into five specialised toolkits, each designed to address specific aspects 
+    of organisational analysis, capability development, engagement planning, and strategic alignment. Choose the toolkit that matches your current consulting needs.
     """)
     
     st.markdown("---")
     
-    # Top row - Pain Point and Capability Toolkits
-    col1, col2 = st.columns(2)
+    # Top row - Pain Point, Capability, and Applications Toolkits
+    col1, col2, col3 = st.columns(3)
     
     with col1:
         # Pain Point Toolkit Overview
@@ -51,13 +51,7 @@ def home_page():
         if st.button("Enter Capability Toolkit", key="enter_capability_toolkit", use_container_width=True, type="primary"):
             st.session_state.page = "Capability Toolkit"
             st.rerun()
-    
-    # Add some space between rows
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # Bottom row - Applications and Engagement Planning Toolkits
-    col3, col4 = st.columns(2)
-    
+
     with col3:
         # Applications Toolkit Overview
         st.markdown("## 🏗️ **Applications Toolkit**")
@@ -77,6 +71,12 @@ def home_page():
             st.session_state.page = "Applications Toolkit"
             st.rerun()
     
+    # Add some space between rows
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Bottom row - Engagement Planning and Strategy & Motivations Toolkits
+    col4, col5 = st.columns(2)
+    
     with col4:
         # Engagement Planning Toolkit Overview
         st.markdown("## 📅 **Engagement Planning Toolkit**")
@@ -94,6 +94,25 @@ def home_page():
         
         if st.button("Enter Engagement Planning Toolkit", key="enter_engagement_planning_toolkit", use_container_width=True, type="primary"):
             st.session_state.page = "Engagement Planning Toolkit"
+            st.rerun()
+
+    with col5:
+        # Strategy and Motivations Toolkit Overview
+        st.markdown("## 🎯 **Strategy and Motivations Toolkit**")
+        st.markdown("_Align strategies with organisational capabilities_")
+        
+        st.markdown("""
+        **Perfect for:** Consultants conducting strategic analysis, mapping strategic initiatives to required capabilities, 
+        and supporting strategic planning and implementation.
+        
+        **Tools included:**
+        • Strategy to Capability Mapping
+        
+        **Typical workflow:** Analyse Strategic Initiatives → Map to Required Capabilities → Support Strategic Implementation
+        """)
+        
+        if st.button("Enter Strategy and Motivations Toolkit", key="enter_strategy_motivations_toolkit", use_container_width=True, type="primary"):
+            st.session_state.page = "Strategy and Motivations Toolkit"
             st.rerun()
     
     st.markdown("---")
