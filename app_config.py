@@ -29,7 +29,7 @@ Customer data access is limited by system restrictions.
 
 {additional_prompts}
 
-Text to analyze:
+Text to analyse:
 {data}
 """,
     input_variables=["additional_prompts", "data"]
@@ -37,9 +37,9 @@ Text to analyze:
 
 # THEME CREATION PROMPT
 theme_creation_prompt = PromptTemplate(
-    template="""You are a management consultant specializing in organizational analysis and strategic planning. \
-    I will provide you with a list of extracted pain points from an organization. \
-    Your task is to analyze these pain points and group them into meaningful themes or categories.
+    template="""You are a management consultant specialising in organisational analysis and strategic planning. \
+    I will provide you with a list of extracted pain points from an organisation. \
+    Your task is to analyse these pain points and group them into meaningful themes or categories.
     
     For each theme, provide:
     1. A clear, descriptive theme name
@@ -48,7 +48,7 @@ theme_creation_prompt = PromptTemplate(
     
     Guidelines:
     - Create 3-7 themes maximum
-    - Themes should represent different aspects of organizational challenges
+    - Themes should represent different aspects of organisational challenges
     - Common themes might include: Process Inefficiencies, Technology Gaps, Communication Issues, Resource Constraints, Customer Experience, etc.
     - Each pain point should belong to one primary theme
     - Provide actionable insights for each theme
@@ -58,7 +58,7 @@ theme_creation_prompt = PromptTemplate(
     Format your response as: Theme Name: Description
     List of related pain points for each theme.
     
-    Pain points to analyze:
+    Pain points to analyse:
     {pain_points}
     """,
     input_variables=["additional_prompts", "pain_points"]
@@ -66,18 +66,18 @@ theme_creation_prompt = PromptTemplate(
 
 # CAPABILITY MAPPING PROMPT  
 capability_mapping_prompt = PromptTemplate(
-    template="""You are a management consultant with expertise in organizational capabilities and business architecture. \
-    I will provide you with pain points and/or themes from an organization. \
-    Your task is to map these pain points to the organizational capabilities that need to be developed, improved, or acquired to address them.
+    template="""You are a management consultant with expertise in organisational capabilities and business architecture. \
+    I will provide you with pain points and/or themes from an organisation. \
+    Your task is to map these pain points to the organisational capabilities that need to be developed, improved, or acquired to address them.
     
     For each pain point or theme, identify:
-    1. The primary organizational capability required
+    1. The primary organisational capability required
     2. The capability maturity level needed (Basic, Intermediate, Advanced)
     3. The business impact of developing this capability
     4. Priority level (High, Medium, Low)
     
     Common capability areas include:
-    - Process Management & Optimization
+    - Process Management & Optimisation
     - Technology & Digital Capabilities
     - Data & Analytics
     - Communication & Collaboration

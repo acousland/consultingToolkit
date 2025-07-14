@@ -5,10 +5,32 @@ from langchain_core.messages import HumanMessage
 from app_config import model
 
 def capability_mapping_page():
-    # Home button
-    if st.button("🏠 Go to Home", key="home_from_mapping"):
-        st.session_state.page = "Home"
-        st.rerun()
+    # Breadcrumb navigation as a single line with clickable elements
+    breadcrumb_container = st.container()
+    
+    with breadcrumb_container:
+        col1, col2, col3, col4, col5 = st.columns([1.2, 0.2, 2.2, 0.2, 3])
+        
+        with col1:
+            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
+                st.session_state.page = "Home"
+                st.rerun()
+        
+        with col2:
+            st.markdown("**›**")
+        
+        with col3:
+            if st.button("🔍 Pain Point Toolkit", key="breadcrumb_toolkit", help="Go to Pain Point Toolkit"):
+                st.session_state.page = "Pain Point Toolkit"
+                st.rerun()
+        
+        with col4:
+            st.markdown("**›**")
+        
+        with col5:
+            st.markdown("**🎯 Capability Mapping**")
+    
+    st.markdown("---")
     
     st.markdown("## Pain Point to Capability Mapping")
     st.markdown("Upload pain points and capabilities spreadsheets to create ID-based mappings.")
@@ -16,7 +38,7 @@ def capability_mapping_page():
     # Create two columns for side-by-side uploads
     col1, col2 = st.columns(2)
     
-    # Initialize session state for dataframes
+    # Initialise session state for dataframes
     if 'pain_points_df' not in st.session_state:
         st.session_state['pain_points_df'] = None
     if 'capabilities_df' not in st.session_state:
@@ -142,7 +164,7 @@ def capability_mapping_page():
                     st.write(f"Processing pain points {batch_start + 1} to {batch_end} of {total_pain_points}")
                     
                     # Create batch mapping prompt
-                    batch_mapping_prompt = f"""You are an expert management consultant specializing in organizational capabilities.
+                    batch_mapping_prompt = f"""You are an expert management consultant specialising in organisational capabilities.
 
 Your task: Match each pain point to the MOST APPROPRIATE capability from the provided list.
 
@@ -179,7 +201,7 @@ Available Capabilities:
 Additional Context: {additional_context}
 
 Instructions:
-1. For each pain point, analyze and determine which capability would best address it
+1. For each pain point, analyse and determine which capability would best address it
 2. Consider both direct solutions and preventive capabilities
 3. Choose the single most appropriate capability ID for each pain point
 4. Return your response in this exact format (one line per pain point):

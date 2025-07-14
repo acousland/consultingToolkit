@@ -4,6 +4,8 @@ import streamlit as st
 import pandas as pd
 import math
 from modules.home_page import home_page
+from modules.pain_point_toolkit_page import pain_point_toolkit_page
+from modules.capability_toolkit_page import capability_toolkit_page
 from modules.pain_point_extraction_page import pain_point_extraction_page
 from modules.capability_mapping_page import capability_mapping_page
 from modules.theme_creation_page import theme_creation_page
@@ -14,7 +16,7 @@ from app_config import model
 if openai.api_key not in st.session_state:
     openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# Initialize session state for page navigation
+# Initialise session state for page navigation
 if 'page' not in st.session_state:
     st.session_state.page = "Home"
 
@@ -33,6 +35,10 @@ st.markdown("""
 # Page routing based on session state only
 if st.session_state.page == "Home":
     home_page()
+elif st.session_state.page == "Pain Point Toolkit":
+    pain_point_toolkit_page()
+elif st.session_state.page == "Capability Toolkit":
+    capability_toolkit_page()
 elif st.session_state.page == "Pain Point Extraction":
     pain_point_extraction_page()
 elif st.session_state.page == "Pain Point Theme Creation":

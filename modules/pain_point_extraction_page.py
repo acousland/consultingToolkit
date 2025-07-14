@@ -5,10 +5,32 @@ from langchain_core.messages import HumanMessage
 from app_config import pain_point_extraction_prompt, model
 
 def pain_point_extraction_page():
-    # Home button
-    if st.button("🏠 Go to Home", key="home_from_extraction"):
-        st.session_state.page = "Home"
-        st.rerun()
+    # Breadcrumb navigation as a single line with clickable elements
+    breadcrumb_container = st.container()
+    
+    with breadcrumb_container:
+        col1, col2, col3, col4, col5 = st.columns([1.2, 0.2, 2.2, 0.2, 3])
+        
+        with col1:
+            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
+                st.session_state.page = "Home"
+                st.rerun()
+        
+        with col2:
+            st.markdown("**›**")
+        
+        with col3:
+            if st.button("🔍 Pain Point Toolkit", key="breadcrumb_toolkit", help="Go to Pain Point Toolkit"):
+                st.session_state.page = "Pain Point Toolkit"
+                st.rerun()
+        
+        with col4:
+            st.markdown("**›**")
+        
+        with col5:
+            st.markdown("**🔍 Pain Point Extraction**")
+    
+    st.markdown("---")
     
     st.markdown("## Pain Point extraction")
     uploaded_file = st.file_uploader("Choose a file")
@@ -47,7 +69,7 @@ def pain_point_extraction_page():
 
         if st.button("Generate pain points", type="secondary"):
             if concatenated_data.empty:
-                st.error("Please select columns to analyze.")
+                st.error("Please select columns to analyse.")
                 st.stop()
             
             all_pain_points = []
