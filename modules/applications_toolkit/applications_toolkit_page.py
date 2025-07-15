@@ -59,3 +59,55 @@ def applications_toolkit_page():
     
     st.markdown("---")
     
+    # Tool 2: Application Categorization
+    with st.container():
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown("### 2. 📊 Application Categorisation")
+            st.markdown("""
+            Automatically categorise your software portfolio into Application, Technology, or Platform classifications.
+            
+            • Upload Excel/CSV files with application portfolio data
+            • Select ID columns and descriptive text columns
+            • AI categorises each item using enterprise architecture principles
+            • Configurable batch processing for large portfolios
+            • Clear definitions for Application, Technology, and Platform categories
+            • Download structured categorisation results for portfolio analysis
+            
+            **Perfect for:** Enterprise architects, technology portfolio managers, and consultants conducting 
+            application portfolio assessments and technology landscape analysis.
+            """)
+        
+        with col2:
+            if st.button("Launch Tool", key="launch_app_categorization", use_container_width=True, type="primary"):
+                st.session_state.page = "Application Categorisation"
+                st.rerun()
+    
+    st.markdown("---")
+    
+    # Cross-navigation to other toolkits
+    st.markdown("## 🔗 Explore Other Toolkits")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        if st.button("🔍 Pain Point Toolkit", key="nav_pain_point", use_container_width=True):
+            st.session_state.page = "Pain Point Toolkit"
+            st.rerun()
+    
+    with col2:
+        if st.button("📝 Capability Toolkit", key="nav_capability", use_container_width=True):
+            st.session_state.page = "Capability Toolkit"
+            st.rerun()
+    
+    with col3:
+        if st.button("📅 Engagement Planning Toolkit", key="nav_engagement", use_container_width=True):
+            st.session_state.page = "Engagement Planning Toolkit"
+            st.rerun()
+    
+    with col4:
+        if st.button("🎯 Strategy & Motivations Toolkit", key="nav_strategy", use_container_width=True):
+            st.session_state.page = "Strategy and Motivations Toolkit"
+            st.rerun()
+    
