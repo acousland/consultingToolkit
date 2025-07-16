@@ -86,6 +86,33 @@ def applications_toolkit_page():
     
     st.markdown("---")
     
+    # Tool 3: Individual Application to Capability Mapping
+    with st.container():
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown("### 3. 🎯 Individual Application to Capability Mapping")
+            st.markdown("""
+            Map a single application to your capability framework with detailed AI analysis.
+            
+            • Upload your capability framework Excel file
+            • Select capability ID and description columns
+            • Enter application name and detailed description
+            • AI provides capability mappings with confidence levels
+            • Detailed analysis with primary, secondary, and potential capability matches
+            • No download required - results displayed immediately on page
+            
+            **Perfect for:** Solution architects, business analysts, and consultants conducting 
+            individual application assessments and targeted capability analysis.
+            """)
+        
+        with col2:
+            if st.button("Launch Tool", key="launch_individual_app_mapping", use_container_width=True, type="primary"):
+                st.session_state.page = "Individual Application to Capability Mapping"
+                st.rerun()
+    
+    st.markdown("---")
+    
     # Cross-navigation to other toolkits
     st.markdown("## 🔗 Explore Other Toolkits")
     

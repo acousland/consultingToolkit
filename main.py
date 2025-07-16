@@ -14,6 +14,7 @@ from modules.pain_point_toolkit.theme_creation_page import theme_creation_page
 from modules.pain_point_toolkit.pain_point_impact_estimation_page import pain_point_impact_estimation_page
 from modules.applications_toolkit.application_capability_mapping_page import application_capability_mapping_page
 from modules.applications_toolkit.application_categorization_page import application_categorization_page
+from modules.applications_toolkit.individual_application_mapping_page import individual_application_mapping_page
 from modules.engagement_planning_toolkit.engagement_planning_toolkit_page import engagement_planning_toolkit_page
 from modules.engagement_planning_toolkit.engagement_touchpoint_planning_page import engagement_touchpoint_planning_page
 from modules.strategy_motivations_toolkit.strategy_motivations_toolkit_page import strategy_motivations_toolkit_page
@@ -65,6 +66,8 @@ elif st.session_state.page == "Application to Capability Mapping":
     application_capability_mapping_page()
 elif st.session_state.page == "Application Categorisation":
     application_categorization_page()
+elif st.session_state.page == "Individual Application to Capability Mapping":
+    individual_application_mapping_page()
 elif st.session_state.page == "Engagement Touchpoint Planning":
     engagement_touchpoint_planning_page()
 elif st.session_state.page == "Capability Description Generation":
