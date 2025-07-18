@@ -1,24 +1,9 @@
 import streamlit as st
+from navigation import render_breadcrumbs
 
 def pain_point_toolkit_page():
     # Breadcrumb navigation as a single line with clickable elements
-    breadcrumb_container = st.container()
-    
-    with breadcrumb_container:
-        col1, col2, col3 = st.columns([1.2, 0.2, 4])
-        
-        with col1:
-            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
-                st.session_state.page = "Home"
-                st.rerun()
-        
-        with col2:
-            st.markdown("**›**")
-        
-        with col3:
-            st.markdown("**🔍 Pain Point Toolkit**")
-    
-    st.markdown("---")
+    render_breadcrumbs([("🏠 Home", "Home"), ("🔍 Pain Point Toolkit", None)])
     
     st.markdown("# 🔍 Pain Point Toolkit")
 

@@ -4,34 +4,11 @@ import math
 from io import BytesIO
 from langchain_core.messages import HumanMessage
 from app_config import model
+from navigation import render_breadcrumbs
 
 def application_categorization_page():
     # Breadcrumb navigation as a single line with clickable elements
-    breadcrumb_container = st.container()
-    
-    with breadcrumb_container:
-        col1, col2, col3, col4, col5 = st.columns([1.2, 0.2, 2.5, 0.2, 3])
-        
-        with col1:
-            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
-                st.session_state.page = "Home"
-                st.rerun()
-        
-        with col2:
-            st.markdown("**›**")
-        
-        with col3:
-            if st.button("🏗️ Applications Toolkit", key="breadcrumb_toolkit", help="Go to Applications Toolkit"):
-                st.session_state.page = "Applications Toolkit"
-                st.rerun()
-        
-        with col4:
-            st.markdown("**›**")
-        
-        with col5:
-            st.markdown("**📊 Application Categorisation**")
-    
-    st.markdown("---")
+    render_breadcrumbs([("🏠 Home", "Home"), ("🏗️ Applications Toolkit", "Applications Toolkit"), ("📊 Application Categorisation", None)])
     
     st.markdown("# 📊 Application Categorisation")
     st.markdown("**Categorise applications into Application, Technology, or Platform classifications**")

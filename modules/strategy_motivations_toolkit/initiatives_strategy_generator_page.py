@@ -8,33 +8,10 @@ from prompts import (
     STRATEGY_DETAILED_PROMPT,
 )
 
+from navigation import render_breadcrumbs
 def initiatives_strategy_generator_page():
     # Breadcrumb navigation as a single line with clickable elements
-    breadcrumb_container = st.container()
-    
-    with breadcrumb_container:
-        col1, col2, col3, col4, col5 = st.columns([1.2, 0.2, 2.8, 0.2, 3.2])
-        
-        with col1:
-            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
-                st.session_state.page = "Home"
-                st.rerun()
-        
-        with col2:
-            st.markdown("**›**")
-        
-        with col3:
-            if st.button("🎯 Strategy and Motivations Toolkit", key="breadcrumb_toolkit", help="Go to Strategy and Motivations Toolkit"):
-                st.session_state.page = "Strategy and Motivations Toolkit"
-                st.rerun()
-        
-        with col4:
-            st.markdown("**›**")
-        
-        with col5:
-            st.markdown("**📈 Tactics to Strategies Generator**")
-    
-    st.markdown("---")
+    render_breadcrumbs([("🏠 Home", "Home"), ("🎯 Strategy and Motivations Toolkit", "Strategy and Motivations Toolkit"), ("📈 Tactics to Strategies Generator", None)])
     
     st.markdown("# 📈 Tactics to Strategies Generator")
     st.markdown("**Identify strategic activities that your tactical initiatives are designed to deliver**")

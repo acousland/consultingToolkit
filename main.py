@@ -3,25 +3,8 @@ import openai
 import streamlit as st
 import pandas as pd
 import math
-from modules.home_page import home_page
-from modules.pain_point_toolkit.pain_point_toolkit_page import pain_point_toolkit_page
-from modules.capability_toolkit.capability_toolkit_page import capability_toolkit_page
-from modules.capability_toolkit.capability_description_page import capability_description_page
-from modules.applications_toolkit.applications_toolkit_page import applications_toolkit_page
-from modules.pain_point_toolkit.pain_point_extraction_page import pain_point_extraction_page
-from modules.pain_point_toolkit.capability_mapping_page import capability_mapping_page
-from modules.pain_point_toolkit.theme_creation_page import theme_creation_page
-from modules.pain_point_toolkit.pain_point_impact_estimation_page import pain_point_impact_estimation_page
-from modules.applications_toolkit.application_capability_mapping_page import application_capability_mapping_page
-from modules.applications_toolkit.application_categorization_page import application_categorization_page
-from modules.applications_toolkit.individual_application_mapping_page import individual_application_mapping_page
-from modules.engagement_planning_toolkit.engagement_planning_toolkit_page import engagement_planning_toolkit_page
-from modules.engagement_planning_toolkit.engagement_touchpoint_planning_page import engagement_touchpoint_planning_page
-from modules.strategy_motivations_toolkit.strategy_motivations_toolkit_page import strategy_motivations_toolkit_page
-from modules.strategy_motivations_toolkit.strategy_capability_mapping_page import strategy_capability_mapping_page
-from modules.strategy_motivations_toolkit.initiatives_strategy_generator_page import initiatives_strategy_generator_page
-from modules.admin_tool_page import admin_tool_page
 from app_config import model
+from navigation import PAGE_ROUTES
 
 
 # Ensure the OpenAI API key is configured only once
@@ -45,39 +28,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Page routing based on session state only
-if st.session_state.page == "Home":
-    home_page()
-elif st.session_state.page == "Pain Point Toolkit":
-    pain_point_toolkit_page()
-elif st.session_state.page == "Capability Toolkit":
-    capability_toolkit_page()
-elif st.session_state.page == "Applications Toolkit":
-    applications_toolkit_page()
-elif st.session_state.page == "Engagement Planning Toolkit":
-    engagement_planning_toolkit_page()
-elif st.session_state.page == "Strategy and Motivations Toolkit":
-    strategy_motivations_toolkit_page()
-elif st.session_state.page == "Pain Point Extraction":
-    pain_point_extraction_page()
-elif st.session_state.page == "Pain Point Theme Creation":
-    theme_creation_page()
-elif st.session_state.page == "Pain Point to Capability Mapping":
-    capability_mapping_page()
-elif st.session_state.page == "Pain Point Impact Estimation":
-    pain_point_impact_estimation_page()
-elif st.session_state.page == "Application to Capability Mapping":
-    application_capability_mapping_page()
-elif st.session_state.page == "Application Categorisation":
-    application_categorization_page()
-elif st.session_state.page == "Individual Application to Capability Mapping":
-    individual_application_mapping_page()
-elif st.session_state.page == "Engagement Touchpoint Planning":
-    engagement_touchpoint_planning_page()
-elif st.session_state.page == "Capability Description Generation":
-    capability_description_page()
-elif st.session_state.page == "Strategy to Capability Mapping":
-    strategy_capability_mapping_page()
-elif st.session_state.page == "Tactics to Strategies Generator":
-    initiatives_strategy_generator_page()
-elif st.session_state.page == "Admin Tool":
-    admin_tool_page()
+route_func = PAGE_ROUTES.get(st.session_state.page)
+if route_func is None:
+    route_func = PAGE_ROUTES["Home"]
+route_func()
