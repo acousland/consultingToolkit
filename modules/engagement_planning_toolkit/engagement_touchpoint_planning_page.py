@@ -3,6 +3,7 @@ import pandas as pd
 from io import BytesIO
 from langchain_core.messages import HumanMessage
 from app_config import model
+from prompts import ENGAGEMENT_TOUCHPOINT_PROMPT
 
 def engagement_touchpoint_planning_page():
     # Breadcrumb navigation as a single line with clickable elements
@@ -157,47 +158,22 @@ def generate_touchpoint_plan(engagement_type, engagement_duration, client_size, 
     status_text.text("🔄 Analysing engagement requirements...")
     progress_bar.progress(0.2)
     
-    # Create the touchpoint planning prompt
+    # Create the touchpoint planning prompt using template
     context_section = ""
     if additional_context and additional_context.strip():
         context_section = f"\nAdditional Context:\n{additional_context}\n"
-    
-    touchpoint_prompt = f"""You are an experienced engagement manager and client relationship specialist. Your task is to create a comprehensive touchpoint plan for a consulting engagement.
 
-Engagement Details:
-- Type: {engagement_type}
-- Duration: {engagement_duration}
-- Client Size: {client_size}
-- Current Phase: {engagement_phase}
-- Touchpoint Frequency: {touchpoint_frequency}
-- Communication Style: {communication_style}
-
-Key Stakeholders:
-{stakeholder_input}
-
-Engagement Objectives:
-{objectives_input}
-
-{context_section}
-
-Create a comprehensive touchpoint plan that includes:
-
-1. **ENGAGEMENT CALENDAR**: A timeline of key touchpoints throughout the engagement
-2. **STAKEHOLDER MATRIX**: Specific communication plan for each stakeholder group
-3. **TOUCHPOINT TYPES**: Different types of interactions (meetings, reports, check-ins, etc.)
-4. **COMMUNICATION CADENCE**: Frequency and timing for each type of touchpoint
-5. **MILESTONE REVIEWS**: Key decision points and milestone celebrations
-6. **ESCALATION PROTOCOLS**: When and how to escalate issues or concerns
-7. **SUCCESS MEASUREMENTS**: How to track and demonstrate progress
-
-Format your response with clear sections and Australian English. Include specific recommendations for:
-- Meeting formats and durations
-- Reporting cadences
-- Stakeholder-specific touchpoints
-- Key milestone reviews
-- Communication protocols
-
-Make the plan practical and actionable for immediate implementation."""
+    touchpoint_prompt = ENGAGEMENT_TOUCHPOINT_PROMPT.format(
+        engagement_type=engagement_type,
+        engagement_duration=engagement_duration,
+        client_size=client_size,
+        engagement_phase=engagement_phase,
+        touchpoint_frequency=touchpoint_frequency,
+        communication_style=communication_style,
+        stakeholder_input=stakeholder_input,
+        objectives_input=objectives_input,
+        context_section=context_section,
+    )
     
     status_text.text("🤖 Generating comprehensive touchpoint plan...")
     progress_bar.progress(0.6)

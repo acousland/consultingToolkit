@@ -3,6 +3,7 @@ import pandas as pd
 from io import BytesIO
 from langchain_core.messages import HumanMessage
 from app_config import model
+from prompts import APPLICATION_CAPABILITY_MAPPING_PROMPT
 
 def application_capability_mapping_page():
     # Breadcrumb navigation as a single line with clickable elements
@@ -246,28 +247,15 @@ def process_application_mapping(applications_df, app_id_column, app_description_
         cap_description = " | ".join(cap_parts)
         capabilities_text += f"{cap_id}: {cap_description}\n"
     
-    # Create the mapping prompt
+    # Create the mapping prompt header using template
     context_section = ""
     if additional_context and additional_context.strip():
         context_section = f"\nAdditional Context:\n{additional_context}\n"
-    
-    mapping_prompt = f"""You are a technology architect and business analyst specialising in application-to-capability mapping. Your task is to map applications to the business capabilities they support.
 
-{context_section}
-For each application, identify which capabilities it supports based on the application's description and the available capabilities list. An application may support multiple capabilities or none at all.
-
-Available Capabilities:
-{capabilities_text}
-
-For each application, respond with only the Capability IDs that the application supports, separated by commas. If an application doesn't clearly support any capabilities, respond with "NONE".
-
-Example format:
-Application1: CAP001, CAP003
-Application2: CAP002
-Application3: NONE
-
-Applications to map:
-"""
+    mapping_prompt_header = APPLICATION_CAPABILITY_MAPPING_PROMPT.format(
+        capabilities=capabilities_text,
+        context_section=context_section,
+    )
     
     total_batches = (total_apps + batch_size - 1) // batch_size
     
@@ -297,7 +285,7 @@ Applications to map:
         
         try:
             # Get AI response for the batch
-            messages = [HumanMessage(content=mapping_prompt + batch_text)]
+            messages = [HumanMessage(content=mapping_prompt_header + batch_text)]
             response = model.invoke(messages)
             mapping_results = response.content.strip().split('\n')
             

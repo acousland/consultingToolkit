@@ -3,6 +3,10 @@ import pandas as pd
 from io import BytesIO
 from langchain_core.messages import HumanMessage
 from app_config import model
+from prompts import (
+    STRATEGY_GROUPING_PROMPT,
+    STRATEGY_DETAILED_PROMPT,
+)
 
 def initiatives_strategy_generator_page():
     # Breadcrumb navigation as a single line with clickable elements
@@ -144,42 +148,12 @@ def generate_strategic_activities(df, id_column, description_columns, additional
         st.write("🔍 **Step 1:** Determining optimal strategic groupings...")
         
         context_section = f"Organisational Context: {additional_context}\n\n" if additional_context.strip() else ""
-        
-        grouping_prompt = f"""You are a senior strategy consultant with expertise in strategic planning and portfolio analysis.
 
-Task: Analyse the provided tactical initiatives and determine the optimal number of strategic activities (themes) they should be grouped into.
-
-{context_section}Guidelines for Optimal Grouping:
-- For 5-15 initiatives: Usually 3-4 strategic activities
-- For 16-30 initiatives: Usually 4-6 strategic activities  
-- For 31-50 initiatives: Usually 5-7 strategic activities
-- For 50+ initiatives: Usually 6-9 strategic activities
-- Look for natural clusters and strategic coherence
-- Avoid having too many small groups or too few large groups
-- Each strategic activity should represent a distinct strategic approach
-
-Instructions:
-1. Review all tactical initiatives
-2. Identify natural strategic themes and groupings
-3. Determine the optimal number of strategic activities
-4. Provide brief reasoning for your recommendation
-
-Return your analysis in this exact format:
-
-**RECOMMENDED NUMBER OF STRATEGIC ACTIVITIES:** [Number]
-
-**REASONING:** 
-[2-3 sentences explaining why this number is optimal for this portfolio]
-
-**PRELIMINARY STRATEGIC THEMES IDENTIFIED:**
-1. [Brief theme name] - [1 sentence description]
-2. [Brief theme name] - [1 sentence description]
-[Continue for recommended number...]
-
-Tactical Initiatives to Analyse ({total_initiatives} total):
-{initiatives_text}
-
-Analysis:"""
+        grouping_prompt = STRATEGY_GROUPING_PROMPT.format(
+            context_section=context_section,
+            total_initiatives=total_initiatives,
+            initiatives_text=initiatives_text,
+        )
 
         try:
             # Call AI for grouping analysis
@@ -204,54 +178,12 @@ Analysis:"""
             # Step 2: Generate detailed strategic activities with IDs
             st.write("🎯 **Step 2:** Generating detailed strategic activities with mapping...")
             
-            detailed_prompt = f"""You are a senior strategy consultant with deep expertise in strategic planning and tactical execution.
-
-Your task: Create {recommended_number} strategic activities from the provided tactical initiatives, with unique IDs and comprehensive mapping.
-
-{context_section}Strategic Framework:
-- Tactics: The specific initiatives, projects, and activities being executed (what you're analysing)
-- Strategic Activities: The broader strategic approaches these tactics are designed to deliver
-- Each strategic activity needs a unique ID (SA-001, SA-002, etc.)
-
-Instructions:
-1. Create exactly {recommended_number} strategic activities
-2. Assign each strategic activity a unique ID (SA-001, SA-002, SA-003, etc.)
-3. Map each tactical initiative to the most appropriate strategic activity
-4. Ensure every tactical initiative is mapped to exactly one strategic activity
-5. Provide comprehensive details for each strategic activity
-
-Return your analysis in this exact format:
-
-**STRATEGIC ACTIVITY SA-001: [Strategic Activity Name]**
-*Strategic Description:* [3-4 sentences describing the strategic approach and methodology]
-*Mapped Tactics:* [Tactic_ID_1, Tactic_ID_2, Tactic_ID_3, ...]
-*Success Factors:* [2-3 key factors critical to success]
-*Risk Considerations:* [2-3 main risks or challenges]
-*Expected Outcomes:* [2-3 strategic outcomes this activity should deliver]
-
-**STRATEGIC ACTIVITY SA-002: [Strategic Activity Name]**
-*Strategic Description:* [3-4 sentences describing the strategic approach and methodology]
-*Mapped Tactics:* [Tactic_ID_1, Tactic_ID_2, Tactic_ID_3, ...]
-*Success Factors:* [2-3 key factors critical to success]
-*Risk Considerations:* [2-3 main risks or challenges]
-*Expected Outcomes:* [2-3 strategic outcomes this activity should deliver]
-
-[Continue for all {recommended_number} strategic activities...]
-
-**TACTICS TO STRATEGIC ACTIVITIES MAPPING TABLE**
-Tactic_ID | Strategic_Activity_ID | Strategic_Activity_Name
-[For each tactic, show: Tactic_ID | SA-XXX | Strategic Activity Name]
-
-**STRATEGIC EXECUTION SUMMARY**
-*Overall Strategic Approach:* [2-3 sentences summarising the collective strategic approach]
-*Strategic Execution Priorities:* [3-5 bullet points of main execution priorities]
-*Tactical Coverage Assessment:* [Assessment confirming all tactics are mapped]
-*Implementation Readiness:* [Brief assessment of readiness to execute these strategic activities]
-
-Tactical Initiatives to Analyse and Map ({total_initiatives} total):
-{initiatives_text}
-
-Strategic Analysis:"""
+            detailed_prompt = STRATEGY_DETAILED_PROMPT.format(
+                recommended_number=recommended_number,
+                context_section=context_section,
+                total_initiatives=total_initiatives,
+                initiatives_text=initiatives_text,
+            )
 
             # Call AI for detailed analysis
             message = HumanMessage(content=detailed_prompt)

@@ -3,6 +3,7 @@ import pandas as pd
 from io import BytesIO
 from langchain_core.messages import HumanMessage
 from app_config import model
+from prompts import PAIN_POINT_CAPABILITY_MAPPING_PROMPT
 
 def capability_mapping_page():
     # Breadcrumb navigation as a single line with clickable elements
@@ -163,56 +164,33 @@ def capability_mapping_page():
                     
                     st.write(f"Processing pain points {batch_start + 1} to {batch_end} of {total_pain_points}")
                     
-                    # Create batch mapping prompt
-                    batch_mapping_prompt = f"""You are an expert management consultant specialising in organisational capabilities.
-
-Your task: Match each pain point to the MOST APPROPRIATE capability from the provided list.
-
-Pain Points to Match:
-"""
-                    
-                    # Add all pain points in this batch
+                    # Build prompt using template
+                    pain_points_text = ""
                     for _, pain_row in batch_df.iterrows():
                         pain_id = pain_row[pain_id_col]
-                        # Concatenate selected pain point text columns
                         pain_text_parts = []
                         for col in pain_text_cols:
                             if pd.notna(pain_row[col]):
                                 pain_text_parts.append(str(pain_row[col]))
-                        pain_text = ' '.join(pain_text_parts)
-                        batch_mapping_prompt += f"- {pain_id}: {pain_text}\n"
-                    
-                    batch_mapping_prompt += f"""
-Available Capabilities:
-"""
-                    
-                    # Add all available capabilities
+                        pain_text = " ".join(pain_text_parts)
+                        pain_points_text += f"- {pain_id}: {pain_text}\n"
+
+                    capabilities_lines = []
                     for _, cap_row in capabilities_df.iterrows():
                         cap_id = cap_row[cap_id_col]
-                        # Concatenate selected capability text columns
                         cap_text_parts = []
                         for col in cap_text_cols:
                             if pd.notna(cap_row[col]):
                                 cap_text_parts.append(str(cap_row[col]))
-                        cap_text = ' '.join(cap_text_parts)
-                        batch_mapping_prompt += f"- {cap_id}: {cap_text}\n"
-                    
-                    batch_mapping_prompt += f"""
-Additional Context: {additional_context}
+                        cap_text = " ".join(cap_text_parts)
+                        capabilities_lines.append(f"- {cap_id}: {cap_text}")
+                    capabilities_text = "\n".join(capabilities_lines)
 
-Instructions:
-1. For each pain point, analyse and determine which capability would best address it
-2. Consider both direct solutions and preventive capabilities
-3. Choose the single most appropriate capability ID for each pain point
-4. Return your response in this exact format (one line per pain point):
-PAIN_POINT_ID -> CAPABILITY_ID
-
-Example format:
-PP001 -> CAP003
-PP002 -> CAP007
-PP003 -> CAP001
-
-Mappings:"""
+                    batch_mapping_prompt = PAIN_POINT_CAPABILITY_MAPPING_PROMPT.format(
+                        pain_points=pain_points_text,
+                        capabilities=capabilities_text,
+                        additional_context=additional_context,
+                    )
                     
                     # Get AI response for the batch
                     output = model.invoke([HumanMessage(content=batch_mapping_prompt)])
