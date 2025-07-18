@@ -19,6 +19,7 @@ from modules.engagement_planning_toolkit.engagement_planning_toolkit_page import
 from modules.engagement_planning_toolkit.engagement_touchpoint_planning_page import engagement_touchpoint_planning_page
 from modules.strategy_motivations_toolkit.strategy_motivations_toolkit_page import strategy_motivations_toolkit_page
 from modules.strategy_motivations_toolkit.strategy_capability_mapping_page import strategy_capability_mapping_page
+from modules.strategy_motivations_toolkit.initiatives_strategy_generator_page import initiatives_strategy_generator_page
 from app_config import model
 
 
@@ -74,3 +75,5 @@ elif st.session_state.page == "Capability Description Generation":
     capability_description_page()
 elif st.session_state.page == "Strategy to Capability Mapping":
     strategy_capability_mapping_page()
+elif st.session_state.page == "Tactics to Strategies Generator":
+    initiatives_strategy_generator_page()

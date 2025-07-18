@@ -63,3 +63,30 @@ def strategy_motivations_toolkit_page():
     
     st.markdown("---")
     
+    # Tool 2: Initiatives to Strategy Generator
+    with st.container():
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown("### 2. 📈 Tactics to Strategies Generator")
+            st.markdown("""
+            Transform tactical initiatives into coherent strategic activities and execution approaches.
+            
+            • Upload tactical initiatives and projects data from Excel spreadsheets
+            • Select initiative ID and multiple description columns
+            • AI analyses patterns and identifies strategic activities that tactics deliver
+            • Configurable number of strategic activities (3-8 activities)
+            • Detailed strategic descriptions, success factors, and risk considerations
+            • Download comprehensive strategic analysis with tactics-to-strategies mapping
+            
+            **Perfect for:** Strategy consultants, transformation leaders, and senior executives 
+            developing strategic execution frameworks from existing tactical initiatives and projects.
+            """)
+        
+        with col2:
+            if st.button("Launch Tool", key="launch_initiatives_strategy_generator", use_container_width=True, type="primary"):
+                st.session_state.page = "Tactics to Strategies Generator"
+                st.rerun()
+    
+    st.markdown("---")
+    
