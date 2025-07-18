@@ -86,14 +86,14 @@ Critical for enterprise architects and IT consultants managing application portf
 **Typical workflow:** Categorise → Map to Capabilities → Analyse Architecture
 
 ### 📊 Engagement Planning Toolkit
-*Structure and optimise client engagements*
+*Plan engagement milestones and touchpoints*
 
-Designed for engagement managers and senior consultants planning complex organisational transformation projects with multiple workstreams.
+Designed for engagement managers and senior consultants structuring complex organisational transformation projects and ensuring consistent client communication.
 
 **Tools included:**
-- **Engagement Structure Generator:** Create comprehensive engagement structures with workstreams, activities, and resource allocation
+- **Engagement Touchpoint Planning:** Schedule meetings, deliverables, and communication milestones across workstreams
 
-**Typical workflow:** Define Scope → Generate Structure → Refine Planning
+**Typical workflow:** Define Scope → Plan Touchpoints → Refine Planning
 
 ### 🎯 Strategy & Motivations Toolkit
 *Strategic analysis and capability alignment*
