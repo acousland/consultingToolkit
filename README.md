@@ -56,6 +56,15 @@ The repository includes a `Dockerfile` and `docker-compose.yml` for running the 
 
 This script runs `git pull` to update the code and then executes `docker compose up --build`. The application will be available at [http://localhost:8501](http://localhost:8501). Ensure `OPENAI_API_KEY` is exported in your shell so Docker can forward it to the container.
 
+### Packaging for macOS and Windows
+To bundle the application as a standalone executable, install **PyInstaller** and run the provided script:
+```bash
+pip install pyinstaller
+python package.py
+```
+This will create a `dist/ConsultingToolkit` bundle - `.app` on macOS or `.exe` on Windows.
+
+
 ## 📋 Toolkit Overview
 
 The Consulting Toolkit is organised into five specialised toolkits, each addressing specific aspects of organisational analysis and strategic development:
