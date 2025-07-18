@@ -29,11 +29,12 @@ A comprehensive Streamlit-based application designed for management consultants 
    ```
 
 4. **Configure OpenAI API:**
-   - Create a `.streamlit/secrets.toml` file in the project root
-   - Add your OpenAI API key:
-     ```toml
-     OPENAI_API_KEY = "your-api-key-here"
+   - Create an `openai_keys.json` file in the project root with your keys:
+     ```json
+     {"active": "default", "keys": {"default": "your-api-key-here"}}
      ```
+   - You can also manage keys from the **Admin & Testing Tool** within the app or
+     provide a fallback key in `.streamlit/secrets.toml` using `OPENAI_API_KEY`.
 
 5. **Run the application:**
    ```bash
@@ -143,8 +144,9 @@ consultingToolkit/
 ├── app_config.py             # AI model configuration and prompts
 ├── requirements.txt          # Python dependencies
 ├── run.sh                   # Startup script
+├── openai_keys.json         # Stored API keys
 ├── .streamlit/
-│   └── secrets.toml         # OpenAI API configuration
+│   └── secrets.toml         # Optional fallback key
 └── modules/
     ├── home_page.py         # Landing page and toolkit overview
     ├── pain_point_toolkit/  # Pain point analysis tools
