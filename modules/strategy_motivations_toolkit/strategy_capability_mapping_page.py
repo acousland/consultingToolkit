@@ -127,7 +127,7 @@ def strategy_capability_mapping_page():
         st.session_state['cap_columns']['text']):  # Check if list is not empty
         
         st.markdown("---")
-        st.markdown("### � Generate Mappings")
+        st.markdown("### 🚀 Generate Mappings")
         
         # Additional context input
         additional_context = st.text_area(
