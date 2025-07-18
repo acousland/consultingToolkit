@@ -29,12 +29,11 @@ A comprehensive Streamlit-based application designed for management consultants 
    ```
 
 4. **Configure OpenAI API:**
-   - Create an `openai_keys.json` file in the project root with your keys:
-     ```json
-     {"active": "default", "keys": {"default": "your-api-key-here"}}
+   - Create a `.streamlit/secrets.toml` file in the project root
+   - Add your OpenAI API key:
+     ```toml
+     OPENAI_API_KEY = "your-api-key-here"
      ```
-   - You can also manage keys from the **Admin & Testing Tool** within the app or
-     provide a fallback key in `.streamlit/secrets.toml` using `OPENAI_API_KEY`.
 
 5. **Run the application:**
    ```bash
@@ -55,15 +54,6 @@ The repository includes a `Dockerfile` and `docker-compose.yml` for running the 
 ```
 
 This script runs `git pull` to update the code and then executes `docker compose up --build`. The application will be available at [http://localhost:8501](http://localhost:8501). Ensure `OPENAI_API_KEY` is exported in your shell so Docker can forward it to the container.
-
-### Packaging for macOS and Windows
-To bundle the application as a standalone executable, install **PyInstaller** and run the provided script:
-```bash
-pip install pyinstaller
-python package.py
-```
-This will create a `dist/ConsultingToolkit` bundle - `.app` on macOS or `.exe` on Windows.
-
 
 ## 📋 Toolkit Overview
 
@@ -153,9 +143,8 @@ consultingToolkit/
 ├── app_config.py             # AI model configuration and prompts
 ├── requirements.txt          # Python dependencies
 ├── run.sh                   # Startup script
-├── openai_keys.json         # Stored API keys
 ├── .streamlit/
-│   └── secrets.toml         # Optional fallback key
+│   └── secrets.toml         # OpenAI API configuration
 └── modules/
     ├── home_page.py         # Landing page and toolkit overview
     ├── pain_point_toolkit/  # Pain point analysis tools

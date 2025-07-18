@@ -2,13 +2,6 @@ import streamlit as st
 from langchain_core.messages import HumanMessage
 from app_config import model
 from navigation import render_breadcrumbs
-from .api_key_manager import (
-    list_keys,
-    add_key,
-    remove_key,
-    set_active_key,
-    get_active_key,
-)
 
 
 def admin_tool_page():
@@ -36,36 +29,5 @@ def admin_tool_page():
                 st.error(f"Failed to connect: {e}")
 
     st.markdown("---")
-    st.markdown("## API Key Management")
-
-    keys = list_keys()
-    active = get_active_key()
-
-    if keys:
-        selected = st.radio(
-            "Available keys",
-            keys,
-            index=keys.index(active) if active in keys else 0,
-            key="key_select",
-        )
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("Set Active", key="set_active"):
-                set_active_key(selected)
-                st.rerun()
-        with col2:
-            if st.button("Remove Key", key="remove_key"):
-                remove_key(selected)
-                st.rerun()
-    else:
-        st.info("No API keys configured.")
-
-    with st.form("add_key_form"):
-        st.markdown("### Add New Key")
-        new_name = st.text_input("Key label")
-        new_value = st.text_input("Key value", type="password")
-        submitted = st.form_submit_button("Add Key")
-        if submitted and new_name and new_value:
-            add_key(new_name, new_value)
-            st.success("Key added")
-            st.rerun()
+    st.markdown("## Additional Tools")
+    st.info("Additional admin tools can be added here as needed.")
