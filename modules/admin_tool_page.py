@@ -52,11 +52,11 @@ def admin_tool_page():
         with col1:
             if st.button("Set Active", key="set_active"):
                 set_active_key(selected)
-                st.experimental_rerun()
+                st.rerun()
         with col2:
             if st.button("Remove Key", key="remove_key"):
                 remove_key(selected)
-                st.experimental_rerun()
+                st.rerun()
     else:
         st.info("No API keys configured.")
 
@@ -68,4 +68,4 @@ def admin_tool_page():
         if submitted and new_name and new_value:
             add_key(new_name, new_value)
             st.success("Key added")
-            st.experimental_rerun()
+            st.rerun()
