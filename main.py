@@ -1,7 +1,6 @@
 import openai
 import streamlit as st
 import pandas as pd
-import math
 from app_config import model
 from navigation import PAGE_ROUTES
 

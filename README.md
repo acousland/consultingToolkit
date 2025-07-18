@@ -45,16 +45,6 @@ A comprehensive Streamlit-based application designed for management consultants 
   ./run.sh
   ```
 
-### Docker Development Setup
-
-The repository includes a `Dockerfile` and `docker-compose.yml` for running the app in a container. Use the helper script to automatically pull the latest code and start the container:
-
-```bash
-./docker-dev.sh
-```
-
-This script runs `git pull` to update the code and then executes `docker compose up --build`. The application will be available at [http://localhost:8501](http://localhost:8501). Ensure `OPENAI_API_KEY` is exported in your shell so Docker can forward it to the container.
-
 ## 📋 Toolkit Overview
 
 The Consulting Toolkit is organised into five specialised toolkits, each addressing specific aspects of organisational analysis and strategic development:
@@ -131,9 +121,7 @@ pandas>=2.0.0
 openpyxl>=3.1.0
 openai>=1.0.0
 langchain>=0.1.0
-langchain-community>=0.0.20
 langchain-openai>=0.0.5
-numpy>=1.24.0
 ```
 
 ### Project Structure
