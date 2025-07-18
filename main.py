@@ -23,7 +23,8 @@ from modules.strategy_motivations_toolkit.initiatives_strategy_generator_page im
 from app_config import model
 
 
-if openai.api_key not in st.session_state:
+# Ensure the OpenAI API key is configured only once
+if not openai.api_key:
     openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Initialise session state for page navigation
