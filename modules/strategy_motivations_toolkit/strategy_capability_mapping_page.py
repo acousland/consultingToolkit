@@ -3,6 +3,7 @@ import pandas as pd
 from io import BytesIO
 from langchain_core.messages import HumanMessage
 from app_config import model
+from prompts import STRATEGY_CAPABILITY_MAPPING_PROMPT
 
 def strategy_capability_mapping_page():
     # Breadcrumb navigation as a single line with clickable elements
@@ -163,60 +164,34 @@ def strategy_capability_mapping_page():
                     
                     st.write(f"Processing strategic initiatives {batch_start + 1} to {batch_end} of {total_strategies}")
                     
-                    # Create batch mapping prompt
-                    batch_mapping_prompt = f"""You are an expert strategy consultant specialising in organisational capabilities and strategic implementation.
-
-Your task: Match each strategic initiative to the MOST APPROPRIATE capability from the provided list.
-
-Strategic Initiatives to Match:
-"""
-                    
-                    # Add all strategic initiatives in this batch
+                    # Build prompt using template
+                    strategies_lines = []
                     for _, strategy_row in batch_df.iterrows():
                         strategy_id = strategy_row[strategy_id_col]
-                        # Concatenate selected strategy text columns
                         strategy_text_parts = []
                         for col in strategy_text_cols:
                             if pd.notna(strategy_row[col]):
                                 strategy_text_parts.append(str(strategy_row[col]))
-                        strategy_text = ' '.join(strategy_text_parts)
-                        batch_mapping_prompt += f"- {strategy_id}: {strategy_text}\n"
-                    
-                    batch_mapping_prompt += f"""
-Available Capabilities:
-"""
-                    
-                    # Add all available capabilities
+                        strategy_text = " ".join(strategy_text_parts)
+                        strategies_lines.append(f"- {strategy_id}: {strategy_text}")
+                    strategies_text = "\n".join(strategies_lines)
+
+                    capabilities_lines = []
                     for _, cap_row in capabilities_df.iterrows():
                         cap_id = cap_row[cap_id_col]
-                        # Concatenate selected capability text columns
                         cap_text_parts = []
                         for col in cap_text_cols:
                             if pd.notna(cap_row[col]):
                                 cap_text_parts.append(str(cap_row[col]))
-                        cap_text = ' '.join(cap_text_parts)
-                        batch_mapping_prompt += f"- {cap_id}: {cap_text}\n"
-                    
-                    batch_mapping_prompt += f"""
-Additional Context: {additional_context}
+                        cap_text = " ".join(cap_text_parts)
+                        capabilities_lines.append(f"- {cap_id}: {cap_text}")
+                    capabilities_text = "\n".join(capabilities_lines)
 
-Instructions:
-1. For each strategic initiative, analyse and determine which capabilities are required for successful implementation
-2. Consider both enablement capabilities (that make the strategy possible) and execution capabilities (that deliver the strategy)
-3. A strategy can map to 0, 1, or many capabilities - choose all that are necessary
-4. Only return the Strategy ID and Capability ID - no additional text to save tokens
-5. Return your response in this exact format:
-- For strategies with no required capabilities: STRATEGIC_INITIATIVE_ID -> NONE
-- For strategies with one capability: STRATEGIC_INITIATIVE_ID -> CAPABILITY_ID
-- For strategies with multiple capabilities: STRATEGIC_INITIATIVE_ID -> CAPABILITY_ID1, CAPABILITY_ID2, CAPABILITY_ID3
-
-Example format:
-STRAT001 -> CAP003, CAP007
-STRAT002 -> CAP012
-STRAT003 -> NONE
-STRAT004 -> CAP001, CAP005, CAP009
-
-Mappings:"""
+                    batch_mapping_prompt = STRATEGY_CAPABILITY_MAPPING_PROMPT.format(
+                        strategies_text=strategies_text,
+                        capabilities_text=capabilities_text,
+                        additional_context=additional_context,
+                    )
                     
                     # Get AI response for the batch
                     output = model.invoke([HumanMessage(content=batch_mapping_prompt)])

@@ -3,6 +3,7 @@ import pandas as pd
 from io import BytesIO
 from langchain_core.messages import HumanMessage
 from app_config import model
+from prompts import THEME_PERSPECTIVE_MAPPING_PROMPT
 
 def theme_creation_page():
     # Breadcrumb navigation as a single line with clickable elements
@@ -135,49 +136,26 @@ def theme_creation_page():
                     
                     st.write(f"Processing pain points {batch_start + 1} to {batch_end} of {total_pain_points}")
                     
-                    # Create batch mapping prompt
-                    batch_mapping_prompt = f"""You are an expert management consultant specialising in organisational analysis.
-
-Your task: Map each pain point to the MOST APPROPRIATE theme and perspective from the provided lists.
-
-Pain Points to Map:
-"""
-                    
-                    # Add all pain points in this batch
+                    # Build prompt using template
+                    pain_points_text = ""
                     for _, pain_row in batch_df.iterrows():
                         pain_id = pain_row[pain_id_col]
-                        # Concatenate selected pain point text columns
                         pain_text_parts = []
                         for col in pain_text_cols:
                             if pd.notna(pain_row[col]):
                                 pain_text_parts.append(str(pain_row[col]))
-                        pain_text = ' '.join(pain_text_parts)
-                        batch_mapping_prompt += f"- {pain_id}: {pain_text}\n"
-                    
-                    batch_mapping_prompt += f"""
-Available Themes:
-{', '.join(predefined_themes)}
+                        pain_text = " ".join(pain_text_parts)
+                        pain_points_text += f"- {pain_id}: {pain_text}\n"
 
-Available Perspectives:
-{', '.join(predefined_perspectives)}
+                    themes_text = ", ".join(predefined_themes)
+                    perspectives_text = ", ".join(predefined_perspectives)
 
-Additional Context: {additional_context}
-
-Instructions:
-1. For each pain point, analyse and determine which theme best categorises it
-2. For each pain point, determine which perspective best represents the viewpoint/domain
-3. Choose exactly one theme and one perspective for each pain point
-4. Return your response in this exact format (one set per pain point):
-PAIN_POINT_ID -> THEME: [theme_name] | PERSPECTIVE: [perspective_name]
-5. Do NOT use any formatting like bold (**), italics (*), or backticks (`) in your response
-6. Use plain text only for all IDs, themes, and perspectives
-
-Example format:
-PP001 -> THEME: Technology Limitations | PERSPECTIVE: Technology
-PP002 -> THEME: Manual Processes | PERSPECTIVE: Process
-PP003 -> THEME: Skills & Capacity | PERSPECTIVE: People
-
-Mappings:"""
+                    batch_mapping_prompt = THEME_PERSPECTIVE_MAPPING_PROMPT.format(
+                        pain_points=pain_points_text,
+                        themes=themes_text,
+                        perspectives=perspectives_text,
+                        additional_context=additional_context,
+                    )
                     
                     # Get AI response for the batch
                     output = model.invoke([HumanMessage(content=batch_mapping_prompt)])

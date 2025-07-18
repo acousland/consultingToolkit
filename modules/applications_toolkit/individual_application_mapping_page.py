@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from langchain_core.messages import HumanMessage
 from app_config import model
+from prompts import INDIVIDUAL_APPLICATION_MAPPING_PROMPT
 
 def individual_application_mapping_page():
     # Breadcrumb navigation as a single line with clickable elements
@@ -164,40 +165,14 @@ def map_individual_application(capabilities_df, cap_id_col, cap_text_cols, app_n
         app_display_id = f" (ID: {app_id})" if app_id.strip() else ""
         app_info = f"Application: {app_name}{app_display_id}\nDescription: {app_description}"
         
-        # Create AI prompt
+        # Create AI prompt using template
         context_section = f"Additional Context: {additional_context}\n\n" if additional_context.strip() else ""
-        
-        prompt = f"""You are an expert enterprise architect specialising in capability mapping and application portfolio management.
 
-Your task: Analyse the application and identify which capabilities from the provided framework are most relevant.
-
-{context_section}Application to Analyse:
-{app_info}
-
-Available Capabilities:
-{capabilities_text}
-
-Instructions:
-1. Analyse the application's functions, purpose, and characteristics
-2. Identify which capabilities from the framework are most relevant to this application
-3. Consider both direct functional alignment and supporting capabilities
-4. An application can map to multiple capabilities (0 to many)
-5. Provide a confidence level for each mapping (High, Medium, Low)
-6. Return your response in this exact format:
-
-**Primary Capabilities** (High Confidence):
-- CAPABILITY_ID: Brief explanation of relevance
-
-**Secondary Capabilities** (Medium Confidence):
-- CAPABILITY_ID: Brief explanation of relevance
-
-**Potential Capabilities** (Low Confidence):
-- CAPABILITY_ID: Brief explanation of relevance
-
-If no capabilities are relevant, respond with:
-**No Direct Capability Mappings Found**
-
-Analysis:"""
+        prompt = INDIVIDUAL_APPLICATION_MAPPING_PROMPT.format(
+            context_section=context_section,
+            app_info=app_info,
+            capabilities_text=capabilities_text,
+        )
 
         try:
             # Call AI model
