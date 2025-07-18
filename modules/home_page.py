@@ -114,5 +114,19 @@ def home_page():
         if st.button("Enter Strategy and Motivations Toolkit", key="enter_strategy_motivations_toolkit", use_container_width=True, type="primary"):
             st.session_state.page = "Strategy and Motivations Toolkit"
             st.rerun()
-    
+
+    # Admin & Testing Tool
+    st.markdown("<br>", unsafe_allow_html=True)
+    with st.container():
+        col_admin_text, col_admin_btn = st.columns([3, 1])
+
+        with col_admin_text:
+            st.markdown("### ⚙️ Admin & Testing Tool")
+            st.markdown("Check your OpenAI configuration and connectivity.")
+
+        with col_admin_btn:
+            if st.button("Open Tool", key="enter_admin_tool", use_container_width=True, type="primary"):
+                st.session_state.page = "Admin Tool"
+                st.rerun()
+
     st.markdown("---")

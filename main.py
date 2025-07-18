@@ -20,6 +20,7 @@ from modules.engagement_planning_toolkit.engagement_touchpoint_planning_page imp
 from modules.strategy_motivations_toolkit.strategy_motivations_toolkit_page import strategy_motivations_toolkit_page
 from modules.strategy_motivations_toolkit.strategy_capability_mapping_page import strategy_capability_mapping_page
 from modules.strategy_motivations_toolkit.initiatives_strategy_generator_page import initiatives_strategy_generator_page
+from modules.admin_tool_page import admin_tool_page
 from app_config import model
 
 
@@ -78,3 +79,5 @@ elif st.session_state.page == "Strategy to Capability Mapping":
     strategy_capability_mapping_page()
 elif st.session_state.page == "Tactics to Strategies Generator":
     initiatives_strategy_generator_page()
+elif st.session_state.page == "Admin Tool":
+    admin_tool_page()
