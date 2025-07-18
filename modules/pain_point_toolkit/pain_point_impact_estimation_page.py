@@ -1,36 +1,13 @@
 import streamlit as st
 import pandas as pd
+from navigation import render_breadcrumbs
 from io import BytesIO
 from langchain_core.messages import HumanMessage
 from app_config import model, pain_point_impact_estimation_prompt
 
 def pain_point_impact_estimation_page():
     # Breadcrumb navigation as a single line with clickable elements
-    breadcrumb_container = st.container()
-    
-    with breadcrumb_container:
-        col1, col2, col3, col4, col5 = st.columns([1.2, 0.2, 2.2, 0.2, 3.5])
-        
-        with col1:
-            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
-                st.session_state.page = "Home"
-                st.rerun()
-        
-        with col2:
-            st.markdown("**›**")
-        
-        with col3:
-            if st.button("🔍 Pain Point Toolkit", key="breadcrumb_toolkit", help="Go to Pain Point Toolkit"):
-                st.session_state.page = "Pain Point Toolkit"
-                st.rerun()
-        
-        with col4:
-            st.markdown("**›**")
-        
-        with col5:
-            st.markdown("**📊 Pain Point Impact Estimation**")
-    
-    st.markdown("---")
+    render_breadcrumbs([("🏠 Home", "Home"), ("🔍 Pain Point Toolkit", "Pain Point Toolkit"), ("📊 Pain Point Impact Estimation", None)])
     
     st.markdown("## 📊 Pain Point Impact Estimation")
     st.markdown("_Assess the business impact of identified pain points_")

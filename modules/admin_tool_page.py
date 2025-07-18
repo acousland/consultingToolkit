@@ -1,23 +1,11 @@
 import streamlit as st
 from langchain_core.messages import HumanMessage
 from app_config import model
+from navigation import render_breadcrumbs
 
 
 def admin_tool_page():
-    # Breadcrumb navigation
-    breadcrumb_container = st.container()
-    with breadcrumb_container:
-        col1, col2, col3 = st.columns([1.2, 0.2, 4])
-        with col1:
-            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
-                st.session_state.page = "Home"
-                st.rerun()
-        with col2:
-            st.markdown("**›**")
-        with col3:
-            st.markdown("**⚙️ Admin & Testing Tool**")
-
-    st.markdown("---")
+    render_breadcrumbs([("🏠 Home", "Home"), ("⚙️ Admin & Testing Tool", None)])
     st.markdown("## Connection Check")
 
     # Check for OpenAI API key

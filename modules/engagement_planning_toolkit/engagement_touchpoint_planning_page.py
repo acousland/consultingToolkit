@@ -4,34 +4,11 @@ from io import BytesIO
 from langchain_core.messages import HumanMessage
 from app_config import model
 from prompts import ENGAGEMENT_TOUCHPOINT_PROMPT
+from navigation import render_breadcrumbs
 
 def engagement_touchpoint_planning_page():
     # Breadcrumb navigation as a single line with clickable elements
-    breadcrumb_container = st.container()
-    
-    with breadcrumb_container:
-        col1, col2, col3, col4, col5 = st.columns([1.2, 0.2, 2.5, 0.2, 3])
-        
-        with col1:
-            if st.button("🏠 Home", key="breadcrumb_home", help="Go to Home"):
-                st.session_state.page = "Home"
-                st.rerun()
-        
-        with col2:
-            st.markdown("**›**")
-        
-        with col3:
-            if st.button("📅 Engagement Planning Toolkit", key="breadcrumb_toolkit", help="Go to Engagement Planning Toolkit"):
-                st.session_state.page = "Engagement Planning Toolkit"
-                st.rerun()
-        
-        with col4:
-            st.markdown("**›**")
-        
-        with col5:
-            st.markdown("**📞 Engagement Touchpoint Planning**")
-    
-    st.markdown("---")
+    render_breadcrumbs([("🏠 Home", "Home"), ("📅 Engagement Planning Toolkit", "Engagement Planning Toolkit"), ("📞 Engagement Touchpoint Planning", None)])
     
     # Under Development Banner
     st.warning("🚧 **Under Development** - This tool is currently being developed and refined. Features and functionality may change.")
