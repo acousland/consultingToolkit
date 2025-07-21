@@ -2,8 +2,8 @@ import streamlit as st
 
 def home_page():
     st.markdown("""
-    This consulting toolkit is organised into five specialised toolkits, each designed to address specific aspects 
-    of organisational analysis, capability development, engagement planning, and strategic alignment. Choose the toolkit that matches your current consulting needs.
+    This consulting toolkit is organised into six specialised toolkits, each designed to address specific aspects 
+    of organisational analysis, capability development, engagement planning, data architecture, and strategic alignment. Choose the toolkit that matches your current consulting needs.
     """)
     
     st.markdown("---")
@@ -69,6 +69,31 @@ def home_page():
         
         if st.button("Enter Applications Toolkit", key="enter_applications_toolkit", use_container_width=True, type="primary"):
             st.session_state.page = "Applications Toolkit"
+            st.rerun()
+    
+    # Add some space between rows
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Middle row - Data and Information Toolkit
+    col_data = st.columns(1)[0]
+    
+    with col_data:
+        # Data and Information Toolkit Overview
+        st.markdown("## 📊 **Data and Information Toolkit**")
+        st.markdown("_Design data models and information architecture_")
+        
+        st.markdown("""
+        **Perfect for:** Data consultants, data architects, and business analysts working on data strategy, 
+        information architecture, and data modeling initiatives.
+        
+        **Tools included:**
+        • Conceptual Data Model Generator
+        
+        **Typical workflow:** Analyze Requirements → Generate Data Models → Document Relationships → Define Business Rules
+        """)
+        
+        if st.button("Enter Data and Information Toolkit", key="enter_data_information_toolkit", use_container_width=True, type="primary"):
+            st.session_state.page = "Data and Information Toolkit"
             st.rerun()
     
     # Add some space between rows
