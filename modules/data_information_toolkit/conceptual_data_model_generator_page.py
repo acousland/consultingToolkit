@@ -1,32 +1,4 @@
-feat: enhance conceptual data model generator with parallel processing and Australian English
-
-Major improvements to the data and information toolkit:
-
-• Add parallel processing for data elements generation using ThreadPoolExecutor
-  - Process multiple subject areas simultaneously instead of sequentially
-  - Include real-time progress tracking with progress bar and status updates
-  - Maintain proper entity ID sequencing (DE001, DE002, etc.) across parallel execution
-  - Implement smart worker limits to prevent API rate limiting
-
-• Fix entity relationship ID mapping issue
-  - Store DataFrame directly from parallel processing to preserve entity mappings
-  - Create entity mapping immediately after data generation completes
-  - Ensure Source Entity ID and Target Entity ID columns populate correctly
-  - Add fallback parsing for backwards compatibility
-
-• Convert all text to Australian English spelling
-  - organization → organisation, organizational → organisational
-  - specialized → specialised, summarize → summarise
-  - categorization → categorisation, behavior → behaviour
-  - Update prompts and UI text consistently
-
-• Improve data processing workflow
-  - Use existing DataFrame instead of re-parsing text for display
-  - Maintain proper subject area ordering despite parallel completion
-  - Enhanced error handling with individual thread failure isolation
-  - Optimized user experience with cleaner progress feedback
-
-Performance improvement: ~70-80% faster generation for 5-7 subject areasimport streamlit as st
+import streamlit as st
 import pandas as pd
 import json
 from io import BytesIO
