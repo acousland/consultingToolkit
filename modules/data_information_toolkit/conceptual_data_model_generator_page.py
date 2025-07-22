@@ -409,22 +409,58 @@ Example format:
             
             if st.button("Generate Entity Relationships", type="secondary", key="generate_relationships"):
                 with st.spinner("Generating entity relationships and mappings..."):
-                    # Prepare the prompt for relationship generation
-                    relationships_prompt = f"""Generate Entity Relationship Mappings
+                    # Get unique subject areas from the data elements dataframe
+                    if 'data_elements_df' not in st.session_state:
+                        st.error("Data elements not found! Please generate data elements first.")
+                        st.stop()
+                    
+                    # Check entity mapping exists
+                    if 'entity_mapping' not in st.session_state:
+                        st.error("Entity mapping not found! Please regenerate data elements first.")
+                        st.stop()
+                    
+                    df = st.session_state.data_elements_df
+                    subject_areas = df['Subject Area'].unique().tolist()
+                    
+                    all_relationships = []
+                    
+                    # Generate relationships for each subject area individually
+                    progress_bar = st.progress(0)
+                    status_text = st.empty()
+                    
+                    for i, subject_area in enumerate(subject_areas):
+                        status_text.text(f"Generating relationships for {subject_area}... ({i+1}/{len(subject_areas)})")
+                        
+                        # Get entities for this subject area
+                        subject_entities = df[df['Subject Area'] == subject_area]
+                        entities_text = ""
+                        for _, row in subject_entities.iterrows():
+                            entities_text += f"- {row['Data Entity']}: {row['Description']}\n"
+                        
+                        # Also include some entities from other subject areas for cross-domain relationships
+                        other_entities = df[df['Subject Area'] != subject_area].sample(min(10, len(df[df['Subject Area'] != subject_area])))
+                        if not other_entities.empty:
+                            entities_text += f"\nOther Available Entities (for cross-domain relationships):\n"
+                            for _, row in other_entities.iterrows():
+                                entities_text += f"- {row['Data Entity']} (from {row['Subject Area']}): {row['Description']}\n"
+                        
+                        # Prepare focused prompt for this subject area
+                        relationships_prompt = f"""Generate Entity Relationship Mappings for {subject_area} Subject Area
 
-Based on the following data elements that were previously identified, generate source-to-target mappings showing relationships between data entities.
+Focus on the "{subject_area}" subject area and generate logical relationships between entities.
 
-Data Elements:
-{st.session_state.data_elements}
+Primary Entities in {subject_area}:
+{entities_text}
 
 Instructions:
-• Identify logical relationships between data entities across different subject areas
+• Generate 3-5 key relationships involving entities from the {subject_area} subject area
+• Include both intra-domain relationships (within {subject_area}) and cross-domain relationships (with other subject areas)
 • Create source-to-target mappings showing how entities relate to each other
 • Include cardinality for each relationship (One-to-One, One-to-Many, Many-to-One, Many-to-Many)
 • Focus on the most important and commonly used relationships
 • Use clear, professional naming conventions
 • Ensure relationships are business-logical and realistic
-• Use ONLY the exact entity names as they appear in the data elements above
+• Use ONLY the exact entity names as they appear in the entities list above
 
 Output Format:
 Present the results as a structured list of mappings. Use this exact format:
@@ -434,31 +470,42 @@ Source Entity - Target Entity - Cardinality - Relationship Description
 Source Entity - Target Entity - Cardinality - Relationship Description
 
 Examples:
-Customer - Order - One-to-Many - A customer can place multiple orders
-Order - Product - Many-to-Many - An order can contain multiple products and a product can be in multiple orders
-Employee - Department - Many-to-One - Multiple employees belong to one department
+Customer Profile - Customer Segment - Many-to-One - Each customer profile is categorised into one segment
+Customer Communication - Customer Profile - Many-to-One - Multiple communications are linked to one customer profile
 
-Generate 10-15 key relationships that would be essential for this business domain.
-IMPORTANT: Use only the exact entity names from the data elements provided above."""
-                    
-                    # Add context if available
-                    if dossier_content:
-                        relationships_prompt += f"\n\nCompany Dossier Information:\n{dossier_content}"
-                    
-                    if additional_context:
-                        relationships_prompt += f"\n\nAdditional Context:\n{additional_context}"
-                    
-                    try:
-                        # Call LangChain model to generate relationships
-                        response = model.invoke([HumanMessage(content=relationships_prompt)])
-                        entity_relationships = response.content
+IMPORTANT: Use only the exact entity names from the entities list provided above."""
                         
-                        # Store in session state
-                        st.session_state.entity_relationships = entity_relationships
+                        # Add context if available
+                        if dossier_content:
+                            relationships_prompt += f"\n\nCompany Dossier Information:\n{dossier_content}"
                         
-                    except Exception as e:
-                        st.error(f"Error generating entity relationships: {str(e)}")
-                        entity_relationships = None
+                        if additional_context:
+                            relationships_prompt += f"\n\nAdditional Context:\n{additional_context}"
+                        
+                        try:
+                            # Call LangChain model for this specific subject area
+                            response = model.invoke([HumanMessage(content=relationships_prompt)])
+                            subject_area_relationships = response.content.strip()
+                            all_relationships.append(subject_area_relationships)
+                            
+                            # Update progress
+                            progress = (i + 1) / len(subject_areas)
+                            progress_bar.progress(progress)
+                            
+                        except Exception as e:
+                            st.error(f"Error generating relationships for {subject_area}: {str(e)}")
+                            continue
+                    
+                    # Clear progress indicators
+                    progress_bar.empty()
+                    status_text.empty()
+                    
+                    # Combine all relationships
+                    combined_relationships = "\n\n".join(all_relationships)
+                    
+                    # Store in session state
+                    st.session_state.entity_relationships = combined_relationships
+                    st.success(f"✅ Generated relationships across {len(subject_areas)} subject areas!")
             
             # Display generated entity relationships
             if 'entity_relationships' in st.session_state and st.session_state.entity_relationships:
@@ -467,6 +514,7 @@ IMPORTANT: Use only the exact entity names from the data elements provided above
                     # Parse the generated content to create a relationships table
                     lines = st.session_state.entity_relationships.split('\n')
                     relationships_data = []
+                    relationship_counter = 1
                     
                     for line in lines:
                         line = line.strip()
@@ -482,14 +530,37 @@ IMPORTANT: Use only the exact entity names from the data elements provided above
                                 cardinality = parts[2].strip()
                                 description = ' - '.join(parts[3:]).strip()
                                 
+                                # Clean entity names - remove numbered prefixes like "1. " or "2) "
+                                import re
+                                source_entity = re.sub(r'^\d+[\.\)]\s*', '', source_entity)
+                                target_entity = re.sub(r'^\d+[\.\)]\s*', '', target_entity)
+                                
                                 # Map entity names to IDs if available
                                 source_entity_id = ""
                                 target_entity_id = ""
                                 if 'entity_mapping' in st.session_state:
+                                    # Try exact match first
                                     source_entity_id = st.session_state.entity_mapping.get(source_entity, "")
                                     target_entity_id = st.session_state.entity_mapping.get(target_entity, "")
+                                    
+                                    # If exact match fails, try case-insensitive match
+                                    if not source_entity_id:
+                                        for entity_name, entity_id in st.session_state.entity_mapping.items():
+                                            if entity_name.lower() == source_entity.lower():
+                                                source_entity_id = entity_id
+                                                break
+                                    
+                                    if not target_entity_id:
+                                        for entity_name, entity_id in st.session_state.entity_mapping.items():
+                                            if entity_name.lower() == target_entity.lower():
+                                                target_entity_id = entity_id
+                                                break
+                                
+                                # Generate relationship ID
+                                relationship_id = f"REL{relationship_counter:03d}"
                                 
                                 relationships_data.append({
+                                    'Relationship ID': relationship_id,
                                     'Source Entity ID': source_entity_id,
                                     'Source Entity': source_entity,
                                     'Target Entity ID': target_entity_id,
@@ -497,6 +568,8 @@ IMPORTANT: Use only the exact entity names from the data elements provided above
                                     'Cardinality': cardinality,
                                     'Relationship Description': description
                                 })
+                                
+                                relationship_counter += 1
                     
                     if relationships_data:
                         st.markdown("#### Entity Relationships")
