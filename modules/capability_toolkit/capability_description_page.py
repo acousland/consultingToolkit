@@ -148,7 +148,7 @@ def capability_description_page():
                             
                             # Create Excel file for download
                             output_buffer = BytesIO()
-                            with pd.ExcelWriter(output_buffer, engine='openpyxl') as writer:
+                            with pd.ExcelWriter(output_buffer, engine='xlsxwriter') as writer:
                                 results_df.to_excel(writer, sheet_name='Capability Descriptions', index=False)
                             
                             output_buffer.seek(0)

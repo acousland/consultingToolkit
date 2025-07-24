@@ -8,6 +8,7 @@ from navigation import render_breadcrumbs
 import concurrent.futures
 import threading
 import time
+# No warnings suppression needed with xlsxwriter engine
 
 def conceptual_data_model_generator_page():
     """Tool for generating conceptual data models."""
@@ -605,7 +606,7 @@ IMPORTANT: Use only the exact entity names from the entities list provided above
                 # Create Excel file with multiple sheets
                 def create_excel_file():
                     output = BytesIO()
-                    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+                    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
                         # Add all available data to Excel with descriptive sheet names
                         if 'subject_areas_df' in st.session_state:
                             st.session_state.subject_areas_df.to_excel(writer, sheet_name='Subject Areas', index=False)

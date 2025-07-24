@@ -361,7 +361,7 @@ def process_application_mapping(applications_df, app_id_column, app_description_
     
     # Create Excel file for download
     output = BytesIO()
-    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         results_df.to_excel(writer, sheet_name='Application Mappings', index=False)
         
         # Add summary sheet

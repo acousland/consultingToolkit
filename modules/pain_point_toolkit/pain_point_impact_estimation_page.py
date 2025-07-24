@@ -250,7 +250,7 @@ def process_impact_estimation(df, id_column, description_columns, context, batch
     
     # Create Excel file for download
     output = BytesIO()
-    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         results_df.to_excel(writer, sheet_name='Impact Assessment', index=False)
         
         # Add summary sheet

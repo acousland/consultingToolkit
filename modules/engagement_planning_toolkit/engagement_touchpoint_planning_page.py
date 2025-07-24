@@ -231,7 +231,7 @@ Generated on: {pd.Timestamp.now().strftime('%d %B %Y at %I:%M %p')}
         
         # Create Excel file
         output = BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
             sample_df.to_excel(writer, sheet_name='Touchpoint Schedule', index=False)
             
             # Add engagement details sheet

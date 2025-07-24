@@ -260,7 +260,7 @@ Applications to categorise:
         # Create Excel download
         excel_buffer = BytesIO()
         
-        with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
+        with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
             # Main results
             results_df.to_excel(writer, sheet_name='Application_Categories', index=False)
             

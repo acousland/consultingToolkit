@@ -364,7 +364,7 @@ SWOT Analysis:"""
             # Create Excel file with multiple sheets
             excel_buffer = BytesIO()
             
-            with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
+            with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
                 # Sheet 1: Tactics to Strategies Mapping (Primary Output)
                 # Create complete mapping ensuring all tactics are included
                 complete_mapping = []

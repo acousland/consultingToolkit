@@ -74,6 +74,7 @@ from modules.strategy_motivations_toolkit.strategy_capability_mapping_page impor
 from modules.strategy_motivations_toolkit.initiatives_strategy_generator_page import initiatives_strategy_generator_page
 from modules.data_information_toolkit.data_information_toolkit_page import data_information_toolkit_page
 from modules.data_information_toolkit.conceptual_data_model_generator_page import conceptual_data_model_generator_page
+from modules.data_information_toolkit.data_application_mapping_page import data_application_mapping_page
 from modules.admin_tool_page import admin_tool_page
 
 # Dictionary mapping page names to functions
@@ -97,5 +98,6 @@ PAGE_ROUTES: dict[str, PageFunc] = {
     "Strategy to Capability Mapping": strategy_capability_mapping_page,
     "Tactics to Strategies Generator": initiatives_strategy_generator_page,
     "Conceptual Data Model Generator": conceptual_data_model_generator_page,
+    "Data-Application Mapping": data_application_mapping_page,
     "Admin Tool": admin_tool_page,
 }

@@ -1,6 +1,8 @@
 streamlit
 pandas
 openpyxl
+xlsxwriter
 openai
 langchain
 langchain_openai
+urllib3<2.0

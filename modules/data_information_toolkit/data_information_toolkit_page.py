@@ -43,7 +43,31 @@ def data_information_toolkit_page():
             st.rerun()
     
     with col2:
-        # Placeholder for future tools
+        st.markdown("#### 🔗 **Data-Application Mapping**")
+        st.markdown("_Map data entities to applications and determine system relationships_")
+        
+        st.markdown("""
+        **Perfect for:** Understanding which data assets reside in which systems and 
+        their role as system of entry or system of record.
+        
+        **Key features:**
+        • Data entity to application mapping
+        • System of entry vs system of record analysis
+        • Batch processing for large datasets
+        • Detailed relationship reasoning
+        """)
+        
+        if st.button("Launch Data-Application Mapping", key="data_app_mapping", use_container_width=True, type="primary"):
+            st.session_state.page = "Data-Application Mapping"
+            st.rerun()
+    
+    # Future tools row
+    st.markdown("---")
+    st.markdown("### Coming Soon")
+    
+    col3, col4 = st.columns(2)
+    
+    with col3:
         st.markdown("#### 🔄 **More Tools Coming Soon**")
         st.markdown("_Additional data and information tools will be added here_")
         
