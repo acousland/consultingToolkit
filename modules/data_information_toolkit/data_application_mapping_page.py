@@ -177,12 +177,57 @@ def data_application_mapping_page():
     if (data_df is not None and app_df is not None and 
         data_entity_id_col is not None and app_id_col is not None):
         
-        st.markdown("### Step 3: Generate Data-Application Mappings")
-        st.markdown("Select an application and analyze which data entities are relevant to it.")
+        st.markdown("### Step 3: Configure Application Filtering (Optional)")
         
-        # Prepare applications for selection
+        # Application filtering section
+        use_filter = st.checkbox("Filter Applications", help="Enable filtering to process only specific applications")
+        
+        filter_column = None
+        filter_values = []
+        
+        if use_filter:
+            # Filter column selection
+            app_columns = app_df.columns.tolist()
+            filter_column = st.selectbox(
+                "Filter Column",
+                app_columns,
+                help="Select the column to filter applications by (e.g., Parent, Category, etc.)",
+                key="filter_column"
+            )
+            
+            if filter_column:
+                # Get unique values from the filter column
+                unique_values = app_df[filter_column].dropna().unique().tolist()
+                filter_values = st.multiselect(
+                    f"Select {filter_column} Values to Include",
+                    unique_values,
+                    help=f"Choose which {filter_column} values to include in the mapping process",
+                    key="filter_values"
+                )
+                
+                if filter_values:
+                    # Show preview of filtered applications
+                    filtered_apps = app_df[app_df[filter_column].isin(filter_values)]
+                    st.info(f"Filter will process {len(filtered_apps)} out of {len(app_df)} applications")
+                    
+                    with st.expander("Preview Filtered Applications"):
+                        preview_cols = [app_id_col, filter_column] + app_description_cols
+                        preview_cols = [col for col in preview_cols if col in app_df.columns]
+                        st.dataframe(filtered_apps[preview_cols], use_container_width=True)
+        
+        st.markdown("### Step 4: Generate Data-Application Mappings")
+        st.markdown("Process all applications (or filtered subset) to analyze which data entities are relevant to each.")
+        
+        # Prepare applications for processing
         applications = []
-        for _, row in app_df.iterrows():
+        
+        # Apply filtering if enabled
+        if use_filter and filter_column and filter_values:
+            filtered_app_df = app_df[app_df[filter_column].isin(filter_values)]
+        else:
+            filtered_app_df = app_df
+        
+        for _, row in filtered_app_df.iterrows():
             app_info = {
                 'id': str(row[app_id_col]),
                 'name': str(row[app_id_col])  # Use ID as name if no other identifier
@@ -201,51 +246,56 @@ def data_application_mapping_page():
             
             applications.append(app_info)
         
-        # Application selection
-        app_options = [f"{app['id']}: {app['description']}" for app in applications]
-        selected_app_index = st.selectbox(
-            "Select Application to Map",
-            range(len(app_options)),
-            format_func=lambda x: app_options[x],
-            help="Choose the application you want to map data entities to"
-        )
+        st.info(f"Ready to process {len(applications)} applications")
         
-        selected_app = applications[selected_app_index]
-        
-        if st.button("Generate Mappings for Selected Application", type="primary", key="generate_mappings"):
-            with st.spinner(f"Analyzing data entities for {selected_app['id']}..."):
+        if st.button("Generate Mappings for All Applications", type="primary", key="generate_mappings"):
+            if not applications:
+                st.error("No applications to process. Please check your filter settings.")
+                return
+            
+            # Initialize progress tracking
+            total_apps = len(applications)
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            
+            all_mapping_data = []
+            processed_count = 0
+            
+            # Prepare data entities for processing
+            data_entities = []
+            for _, row in data_df.iterrows():
+                entity_info = {
+                    'id': str(row[data_entity_id_col]),
+                    'name': str(row[data_entity_id_col])  # Use ID as name if no other identifier
+                }
                 
-                # Prepare data entities for processing
-                data_entities = []
-                for _, row in data_df.iterrows():
-                    entity_info = {
-                        'id': str(row[data_entity_id_col]),
-                        'name': str(row[data_entity_id_col])  # Use ID as name if no other identifier
-                    }
+                # Add description information
+                descriptions = []
+                for desc_col in data_description_cols:
+                    if pd.notna(row[desc_col]):
+                        descriptions.append(f"{desc_col}: {str(row[desc_col])}")
+                
+                if descriptions:
+                    entity_info['description'] = " | ".join(descriptions)
+                else:
+                    entity_info['description'] = "No description available"
+                
+                data_entities.append(entity_info)
+            
+            # Create entity context (same for all applications)
+            entity_context = ""
+            for entity in data_entities:
+                entity_context += f"{entity['id']}: {entity['description']}\n"
+            
+            # Process applications in parallel
+            def process_application(app_info):
+                """Process a single application for data entity mapping."""
+                try:
+                    # Create application context
+                    app_context = f"{app_info['id']}: {app_info['description']}"
                     
-                    # Add description information
-                    descriptions = []
-                    for desc_col in data_description_cols:
-                        if pd.notna(row[desc_col]):
-                            descriptions.append(f"{desc_col}: {str(row[desc_col])}")
-                    
-                    if descriptions:
-                        entity_info['description'] = " | ".join(descriptions)
-                    else:
-                        entity_info['description'] = "No description available"
-                    
-                    data_entities.append(entity_info)
-                
-                # Create application context
-                app_context = f"{selected_app['id']}: {selected_app['description']}"
-                
-                # Create entity context
-                entity_context = ""
-                for entity in data_entities:
-                    entity_context += f"{entity['id']}: {entity['description']}\n"
-                
-                # Create mapping prompt with your new format
-                mapping_prompt = f"""Application-to-Data Entity Mapping Analysis
+                    # Create mapping prompt
+                    mapping_prompt = f"""Application-to-Data Entity Mapping Analysis
 
 You are a solution architect evaluating how a single application fits into an organisation's enterprise data model. Your task is to identify all data entities that are meaningfully connected to the application based on how it is used in real business operations.
 
@@ -285,15 +335,13 @@ DE034 | Calendly booking links are often embedded in marketing campaigns, making
 IMPORTANT:
 - Use only the exact Data Entity IDs from the list above
 - Be thorough and precise in your reasoning"""
-                
-                try:
+                    
                     # Call LangChain model
                     response = model.invoke([HumanMessage(content=mapping_prompt)])
                     result = response.content.strip()
                     
                     # Parse results into structured data
-                    mapping_data = []
-                    mapping_counter = 1
+                    app_mappings = []
                     
                     lines = result.split('\n')
                     for line in lines:
@@ -308,50 +356,71 @@ IMPORTANT:
                                 data_entity_exists = any(entity['id'] == data_entity_id for entity in data_entities)
                                 
                                 if data_entity_exists:
-                                    mapping_id = f"DAM{mapping_counter:03d}"
-                                    mapping_data.append({
-                                        'Mapping ID': mapping_id,
+                                    app_mappings.append({
                                         'Data Entity ID': data_entity_id,
-                                        'Application ID': selected_app['id'],
+                                        'Application ID': app_info['id'],
                                         'Reasoning': reasoning
                                     })
-                                    mapping_counter += 1
                     
-                    if mapping_data:
-                        # Store results with explicit string conversion to avoid Arrow conversion issues
-                        mappings_df = pd.DataFrame(mapping_data)
-                        
-                        # Ensure all columns are properly typed as strings
-                        mappings_df['Mapping ID'] = mappings_df['Mapping ID'].astype(str)
-                        mappings_df['Data Entity ID'] = mappings_df['Data Entity ID'].astype(str)
-                        mappings_df['Application ID'] = mappings_df['Application ID'].astype(str)
-                        mappings_df['Reasoning'] = mappings_df['Reasoning'].astype(str)
-                        
-                        # Initialize or append to existing mappings
-                        if 'data_app_mappings_df' in st.session_state:
-                            # Remove existing mappings for this application
-                            existing_df = st.session_state.data_app_mappings_df
-                            
-                            # Ensure existing DataFrame has same column types
-                            existing_df['Mapping ID'] = existing_df['Mapping ID'].astype(str)
-                            existing_df['Data Entity ID'] = existing_df['Data Entity ID'].astype(str)
-                            existing_df['Application ID'] = existing_df['Application ID'].astype(str)
-                            existing_df['Reasoning'] = existing_df['Reasoning'].astype(str)
-                            
-                            filtered_df = existing_df[existing_df['Application ID'] != selected_app['id']]
-                            # Append new mappings
-                            st.session_state.data_app_mappings_df = pd.concat([filtered_df, mappings_df], ignore_index=True)
-                        else:
-                            st.session_state.data_app_mappings_df = mappings_df
-                        
-                        st.success(f"✅ Generated {len(mapping_data)} data entity mappings for {selected_app['id']}!")
-                    else:
-                        st.error("No valid mappings were generated. Please check your data and try again.")
-                        
+                    return app_mappings
+                    
                 except Exception as e:
-                    st.error(f"Error generating mappings: {str(e)}")
+                    st.error(f"Error processing {app_info['id']}: {str(e)}")
+                    return []
+            
+            # Process applications in parallel with max 5 workers to avoid overwhelming the API
+            with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+                # Submit all application tasks
+                future_to_app = {executor.submit(process_application, app): app for app in applications}
+                
+                completed_count = 0
+                all_mapping_data = []
+                
+                # Process completed tasks
+                for future in concurrent.futures.as_completed(future_to_app):
+                    app = future_to_app[future]
+                    completed_count += 1
+                    
+                    try:
+                        app_mappings = future.result()
+                        all_mapping_data.extend(app_mappings)
+                        
+                        # Update progress
+                        progress = completed_count / total_apps
+                        progress_bar.progress(progress)
+                        status_text.text(f"Completed {completed_count}/{total_apps} applications")
+                        
+                    except Exception as e:
+                        st.error(f"Error processing {app['id']}: {str(e)}")
+            
+            # Add mapping IDs to final data
+            final_mapping_data = []
+            for i, mapping in enumerate(all_mapping_data, 1):
+                mapping['Mapping ID'] = f"DAM{i:03d}"
+                final_mapping_data.append(mapping)
+            
+            # Clear progress indicators
+            progress_bar.empty()
+            status_text.empty()
+            
+            if final_mapping_data:
+                # Store results with explicit string conversion to avoid Arrow conversion issues
+                mappings_df = pd.DataFrame(final_mapping_data)
+                
+                # Ensure all columns are properly typed as strings
+                mappings_df['Mapping ID'] = mappings_df['Mapping ID'].astype(str)
+                mappings_df['Data Entity ID'] = mappings_df['Data Entity ID'].astype(str)
+                mappings_df['Application ID'] = mappings_df['Application ID'].astype(str)
+                mappings_df['Reasoning'] = mappings_df['Reasoning'].astype(str)
+                
+                # Store in session state (replace existing mappings)
+                st.session_state.data_app_mappings_df = mappings_df
+                
+                st.success(f"✅ Generated {len(final_mapping_data)} data entity mappings across {completed_count} applications!")
+            else:
+                st.error("No valid mappings were generated. Please check your data and try again.")
     
-    # Step 4: Display Results
+    # Step 5: Display Results
     if 'data_app_mappings_df' in st.session_state:
         st.markdown("### Step 4: Generated Mappings")
         
