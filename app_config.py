@@ -1,9 +1,32 @@
+import json
+import os
 from langchain.output_parsers import CommaSeparatedListOutputParser
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 
-# Common model configuration
-model = ChatOpenAI(model_name="o1-mini", temperature=1)
+# Load model configuration from JSON file
+def load_model_config():
+    config_path = os.path.join(os.path.dirname(__file__), "model_config.json")
+    try:
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        return config.get("openai_model", "o1-mini"), config.get("temperature", 1)
+    except (FileNotFoundError, json.JSONDecodeError):
+        # Fallback to defaults if config file doesn't exist or is invalid
+        return "o1-mini", 1
+
+# Load current configuration
+current_model, current_temperature = load_model_config()
+
+# Common model configuration - use 'model' parameter for newer LangChain versions
+model = ChatOpenAI(model=current_model, temperature=current_temperature)
+
+def reinitialize_model():
+    """Reinitialize the model with current configuration"""
+    global model, current_model, current_temperature
+    current_model, current_temperature = load_model_config()
+    model = ChatOpenAI(model=current_model, temperature=current_temperature)
+    return model
 
 # Output parsers
 comma_list_parser = CommaSeparatedListOutputParser()

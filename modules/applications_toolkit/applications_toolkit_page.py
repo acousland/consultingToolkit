@@ -44,12 +44,39 @@ def applications_toolkit_page():
     
     st.markdown("---")
     
-    # Tool 2: Application Categorization
+    # Tool 2: Logical Application Model Generator
     with st.container():
         col1, col2 = st.columns([3, 1])
         
         with col1:
-            st.markdown("### 2. 📊 Application Categorisation")
+            st.markdown("### 2. 🏛️ Logical Application Model Generator")
+            st.markdown("""
+            Generate a logical application model by categorizing applications into high-level architectural groups.
+            
+            • Upload company context and application portfolio data
+            • AI creates logical categories based on architectural purpose (e.g., Digital Experience, Data Management)
+            • Automatically assigns applications to appropriate logical categories
+            • Generates enterprise architecture taxonomy and definitions
+            • Provides architectural insights, gaps analysis, and recommendations
+            • Download structured logical model results for architecture planning
+            
+            **Perfect for:** Enterprise architects, solution architects, and consultants building 
+            application taxonomies and logical architecture models.
+            """)
+        
+        with col2:
+            if st.button("Launch Tool", key="launch_logical_model_generator", use_container_width=True, type="primary"):
+                st.session_state.page = "Logical Application Model Generator"
+                st.rerun()
+    
+    st.markdown("---")
+    
+    # Tool 3: Application Categorization
+    with st.container():
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown("### 3. 📊 Application Categorisation")
             st.markdown("""
             Automatically categorise your software portfolio into Application, Technology, or Platform classifications.
             
@@ -71,12 +98,12 @@ def applications_toolkit_page():
     
     st.markdown("---")
     
-    # Tool 3: Individual Application to Capability Mapping
+    # Tool 4: Individual Application to Capability Mapping
     with st.container():
         col1, col2 = st.columns([3, 1])
         
         with col1:
-            st.markdown("### 3. 🎯 Individual Application to Capability Mapping")
+            st.markdown("### 4. 🎯 Individual Application to Capability Mapping")
             st.markdown("""
             Map a single application to your capability framework with detailed AI analysis.
             

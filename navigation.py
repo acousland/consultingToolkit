@@ -66,6 +66,7 @@ from modules.pain_point_toolkit.theme_creation_page import theme_creation_page
 from modules.pain_point_toolkit.pain_point_impact_estimation_page import pain_point_impact_estimation_page
 from modules.applications_toolkit.application_capability_mapping_page import application_capability_mapping_page
 from modules.applications_toolkit.application_categorization_page import application_categorization_page
+from modules.applications_toolkit.logical_application_model_generator_page import logical_application_model_generator_page
 from modules.applications_toolkit.individual_application_mapping_page import individual_application_mapping_page
 from modules.engagement_planning_toolkit.engagement_planning_toolkit_page import engagement_planning_toolkit_page
 from modules.engagement_planning_toolkit.engagement_touchpoint_planning_page import engagement_touchpoint_planning_page
@@ -92,6 +93,7 @@ PAGE_ROUTES: dict[str, PageFunc] = {
     "Pain Point Impact Estimation": pain_point_impact_estimation_page,
     "Application to Capability Mapping": application_capability_mapping_page,
     "Application Categorisation": application_categorization_page,
+    "Logical Application Model Generator": logical_application_model_generator_page,
     "Individual Application to Capability Mapping": individual_application_mapping_page,
     "Engagement Touchpoint Planning": engagement_touchpoint_planning_page,
     "Capability Description Generation": capability_description_page,

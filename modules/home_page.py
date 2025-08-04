@@ -63,8 +63,9 @@ def home_page():
         
         **Tools included:**
         • Application to Capability Mapping
+        • Logical Application Model Generator
         
-        **Typical workflow:** Map Applications → Analyse Technology Landscape → Support Architecture Decisions
+        **Typical workflow:** Map Applications → Generate Logical Models → Analyse Technology Landscape → Support Architecture Decisions
         """)
         
         if st.button("Enter Applications Toolkit", key="enter_applications_toolkit", use_container_width=True, type="primary"):
@@ -74,10 +75,10 @@ def home_page():
     # Add some space between rows
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Middle row - Data and Information Toolkit
-    col_data = st.columns(1)[0]
+    # Bottom row - Data Information, Engagement Planning and Strategy & Motivations Toolkits
+    col4, col5, col6 = st.columns(3)
     
-    with col_data:
+    with col4:
         # Data and Information Toolkit Overview
         st.markdown("## 📊 **Data and Information Toolkit**")
         st.markdown("_Design data models and information architecture_")
@@ -88,6 +89,7 @@ def home_page():
         
         **Tools included:**
         • Conceptual Data Model Generator
+        • Data-Application Mapping
         
         **Typical workflow:** Analyze Requirements → Generate Data Models → Document Relationships → Define Business Rules
         """)
@@ -96,13 +98,7 @@ def home_page():
             st.session_state.page = "Data and Information Toolkit"
             st.rerun()
     
-    # Add some space between rows
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # Bottom row - Engagement Planning and Strategy & Motivations Toolkits
-    col4, col5 = st.columns(2)
-    
-    with col4:
+    with col5:
         # Engagement Planning Toolkit Overview
         st.markdown("## 📅 **Engagement Planning Toolkit**")
         st.markdown("_Plan and structure client engagements_")
@@ -121,7 +117,7 @@ def home_page():
             st.session_state.page = "Engagement Planning Toolkit"
             st.rerun()
 
-    with col5:
+    with col6:
         # Strategy and Motivations Toolkit Overview
         st.markdown("## 🎯 **Strategy and Motivations Toolkit**")
         st.markdown("_Align strategies with organisational capabilities_")
@@ -147,7 +143,7 @@ def home_page():
 
         with col_admin_text:
             st.markdown("### ⚙️ Admin & Testing Tool")
-            st.markdown("Check your OpenAI configuration and connectivity.")
+            st.markdown("Configure OpenAI models and check connectivity.")
 
         with col_admin_btn:
             if st.button("Open Tool", key="enter_admin_tool", use_container_width=True, type="primary"):

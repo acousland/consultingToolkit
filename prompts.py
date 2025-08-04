@@ -65,19 +65,27 @@ Mappings:"""
 # Application to Capability Mapping prompt template
 APPLICATION_CAPABILITY_MAPPING_PROMPT = PromptTemplate(
     input_variables=["capabilities", "context_section"],
-    template="""You are a technology architect and business analyst specialising in application-to-capability mapping. Your task is to map applications to the business capabilities they support.
+    template="""You are an enterprise architect mapping software applications to a business-capability model for a residential construction and home-building organisation.
 
-{context_section}For each application, identify which capabilities it supports based on the application's description and the available capabilities list. An application may support multiple capabilities or none at all.
+**How to reason (think silently, do not show your thinking):**
+1. Read each application's description carefully.
+2. Scan the full name *and* the detailed prose for functional verbs, nouns, and domain cues.
+3. Compare those cues to both the capability titles and their detailed descriptions.
+4. Look for synonyms and near-synonyms (e.g., "CRM" → "Customer Relationship Management",  
+   "virtual tour analytics" → "Marketing Analytics & Reporting").
+5. Only count a capability when the application directly delivers, automates, or materially
+   supports that business function. Ignore incidental or indirect links.
+
+**Output rules (show only these in your answer):**
+• Return just the Capability IDs, separated by commas, for each application.  
+• Preserve the exact "Application Name:" label before the IDs.  
+• If no clear capability match exists, output `NONE`.  
+• Provide no explanations, qualifiers, or extra text.
+
+{context_section}
 
 Available Capabilities:
 {capabilities}
-
-For each application, respond with only the Capability IDs that the application supports, separated by commas. If an application doesn't clearly support any capabilities, respond with \"NONE\".
-
-Example format:
-Application1: CAP001, CAP003
-Application2: CAP002
-Application3: NONE
 
 Applications to map:"""
 )

@@ -4,6 +4,13 @@ import pandas as pd
 from app_config import model
 from navigation import PAGE_ROUTES
 
+# Configure Streamlit page settings - must be first Streamlit command
+st.set_page_config(
+    page_title="Consulting Toolkit",
+    page_icon="🛠️",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 # Ensure the OpenAI API key is configured only once
 if not openai.api_key:
