@@ -77,6 +77,7 @@ from modules.data_information_toolkit.data_information_toolkit_page import data_
 from modules.data_information_toolkit.conceptual_data_model_generator_page import conceptual_data_model_generator_page
 from modules.data_information_toolkit.data_application_mapping_page import data_application_mapping_page
 from modules.data_information_toolkit.ai_use_case_customiser_page import ai_use_case_customiser_page
+from modules.data_information_toolkit.use_case_ethics_review_page import use_case_ethics_review_page
 from modules.admin_tool_page import admin_tool_page
 
 # Dictionary mapping page names to functions
@@ -103,5 +104,6 @@ PAGE_ROUTES: dict[str, PageFunc] = {
     "Conceptual Data Model Generator": conceptual_data_model_generator_page,
     "Data-Application Mapping": data_application_mapping_page,
     "AI Use Case Customiser": ai_use_case_customiser_page,
+    "Use Case Ethics Review": use_case_ethics_review_page,
     "Admin Tool": admin_tool_page,
 }

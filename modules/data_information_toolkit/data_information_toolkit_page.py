@@ -21,7 +21,7 @@ def data_information_toolkit_page():
     # Tool selection
     st.markdown("### Available Tools")
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("#### 📊 **Conceptual Data Model Generator**")
@@ -61,6 +61,9 @@ def data_information_toolkit_page():
             st.session_state.page = "Data-Application Mapping"
             st.rerun()
     
+    # Second row of tools
+    col3, col4 = st.columns(2)
+    
     with col3:
         st.markdown("#### 🤖 **AI Use Case Customiser**")
         st.markdown("_Evaluate and rank AI use cases for your specific company context_")
@@ -71,7 +74,7 @@ def data_information_toolkit_page():
         
         **Key features:**
         • Company context integration
-        • AI use case scoring (1-10)
+        • AI use case scoring (1-100)
         • Parallel processing for efficiency
         • Ranked recommendations
         """)
@@ -80,13 +83,32 @@ def data_information_toolkit_page():
             st.session_state.page = "AI Use Case Customiser"
             st.rerun()
     
+    with col4:
+        st.markdown("#### ⚖️ **Use Case Ethics Review**")
+        st.markdown("_Comprehensive ethical analysis of use cases from multiple philosophical perspectives_")
+        
+        st.markdown("""
+        **Perfect for:** Evaluating the ethical implications of any use case, ensuring responsible 
+        implementation, and building stakeholder confidence.
+        
+        **Key features:**
+        • Deontological (rule-based) analysis
+        • Utilitarian cost-benefit evaluation
+        • Social contract assessment
+        • Virtue ethics review
+        """)
+        
+        if st.button("Launch Use Case Ethics Review", key="use_case_ethics_review", use_container_width=True, type="primary"):
+            st.session_state.page = "Use Case Ethics Review"
+            st.rerun()
+    
     # Future tools row
     st.markdown("---")
     st.markdown("### Coming Soon")
     
-    col4, col5 = st.columns(2)
+    col5, col6 = st.columns(2)
     
-    with col4:
+    with col5:
         st.markdown("#### 🔄 **More Tools Coming Soon**")
         st.markdown("_Additional data, information, and AI tools will be added here_")
         
@@ -95,7 +117,19 @@ def data_information_toolkit_page():
         • Data Quality Assessment
         • Information Flow Mapping
         • Data Governance Framework
-        • AI Ethics Assessment
+        • AI Risk Assessment
+        """)
+    
+    with col6:
+        st.markdown("#### 💡 **Suggest a Tool**")
+        st.markdown("_Have ideas for new tools in this toolkit?_")
+        
+        st.markdown("""
+        **We're always looking to expand:**
+        • Contact us with your suggestions
+        • Tools for data strategy
+        • AI implementation guidance
+        • Information architecture aids
         """)
     
     st.markdown("---")
