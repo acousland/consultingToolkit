@@ -79,23 +79,24 @@ def home_page():
     col4, col5, col6 = st.columns(3)
     
     with col4:
-        # Data and Information Toolkit Overview
-        st.markdown("## 📊 **Data and Information Toolkit**")
-        st.markdown("_Design data models and information architecture_")
+        # Data, Information, and AI Toolkit Overview
+        st.markdown("## 📊 **Data, Information, and AI Toolkit**")
+        st.markdown("_Design data models, information architecture, and AI solutions_")
         
         st.markdown("""
-        **Perfect for:** Data consultants, data architects, and business analysts working on data strategy, 
-        information architecture, and data modeling initiatives.
+        **Perfect for:** Data consultants, data architects, AI specialists, and business analysts working on data strategy, 
+        information architecture, data modeling, and AI implementation initiatives.
         
         **Tools included:**
         • Conceptual Data Model Generator
         • Data-Application Mapping
+        • AI Use Case Customiser
         
-        **Typical workflow:** Analyze Requirements → Generate Data Models → Document Relationships → Define Business Rules
+        **Typical workflow:** Analyze Requirements → Generate Data Models → Document Relationships → Define Business Rules → Assess AI Opportunities
         """)
         
-        if st.button("Enter Data and Information Toolkit", key="enter_data_information_toolkit", use_container_width=True, type="primary"):
-            st.session_state.page = "Data and Information Toolkit"
+        if st.button("Enter Data, Information, and AI Toolkit", key="enter_data_information_toolkit", use_container_width=True, type="primary"):
+            st.session_state.page = "Data, Information, and AI Toolkit"
             st.rerun()
     
     with col5:

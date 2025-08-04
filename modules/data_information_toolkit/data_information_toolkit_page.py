@@ -2,18 +2,18 @@ import streamlit as st
 from navigation import render_breadcrumbs
 
 def data_information_toolkit_page():
-    """Data and Information Toolkit page with various data modeling and analysis tools."""
+    """Data, Information, and AI Toolkit page with various data modeling, analysis, and AI tools."""
     
     # Breadcrumbs
-    render_breadcrumbs([("Home", "Home"), ("Data and Information Toolkit", None)])
+    render_breadcrumbs([("Home", "Home"), ("Data, Information, and AI Toolkit", None)])
     
-    st.markdown("## Data and Information Toolkit")
-    st.markdown("Comprehensive tools for data modeling, analysis, and information architecture.")
+    st.markdown("## Data, Information, and AI Toolkit")
+    st.markdown("Comprehensive tools for data modeling, analysis, information architecture, and AI solutions.")
     
     # Introduction section
     st.markdown("""
-    This toolkit provides essential tools for data consultants, data architects, and business analysts 
-    working on data strategy, information architecture, and data modeling initiatives.
+    This toolkit provides essential tools for data consultants, data architects, AI specialists, and business analysts 
+    working on data strategy, information architecture, data modeling, and AI implementation initiatives.
     """)
     
     st.markdown("---")
@@ -21,7 +21,7 @@ def data_information_toolkit_page():
     # Tool selection
     st.markdown("### Available Tools")
     
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     
     with col1:
         st.markdown("#### 📊 **Conceptual Data Model Generator**")
@@ -61,22 +61,41 @@ def data_information_toolkit_page():
             st.session_state.page = "Data-Application Mapping"
             st.rerun()
     
+    with col3:
+        st.markdown("#### 🤖 **AI Use Case Customiser**")
+        st.markdown("_Evaluate and rank AI use cases for your specific company context_")
+        
+        st.markdown("""
+        **Perfect for:** Assessing AI opportunities, prioritizing use cases based on company context, 
+        and creating customized AI implementation roadmaps.
+        
+        **Key features:**
+        • Company context integration
+        • AI use case scoring (1-10)
+        • Parallel processing for efficiency
+        • Ranked recommendations
+        """)
+        
+        if st.button("Launch AI Use Case Customiser", key="ai_use_case_customiser", use_container_width=True, type="primary"):
+            st.session_state.page = "AI Use Case Customiser"
+            st.rerun()
+    
     # Future tools row
     st.markdown("---")
     st.markdown("### Coming Soon")
     
-    col3, col4 = st.columns(2)
+    col4, col5 = st.columns(2)
     
-    with col3:
+    with col4:
         st.markdown("#### 🔄 **More Tools Coming Soon**")
-        st.markdown("_Additional data and information tools will be added here_")
+        st.markdown("_Additional data, information, and AI tools will be added here_")
         
         st.markdown("""
         **Future tools may include:**
         • Data Quality Assessment
         • Information Flow Mapping
         • Data Governance Framework
-        • Master Data Strategy
+        • AI Ethics Assessment
         """)
     
     st.markdown("---")
