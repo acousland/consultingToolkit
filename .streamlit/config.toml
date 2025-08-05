@@ -1,0 +1,22 @@
+[theme]
+base                     = "dark"
+
+# macOS-inspired, lighter dark palette
+primaryColor             = "#0A84FF"   # system accent blue
+backgroundColor          = "#2C2C2E"   # grouped-content background
+secondaryBackgroundColor = "#3A3A3C"   # elevated card surface
+textColor                = "#F5F5F7"   # off-white label text
+linkColor                = "#66A3FF"   # softer blue for inline links
+
+# typography
+font                     = "sans serif"
+
+[browser]
+gatherUsageStats         = false
+
+[server]
+runOnSave                = true
+port                     = 8501
+
+[global]
+developmentMode          = false
