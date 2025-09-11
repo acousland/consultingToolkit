@@ -1,6 +1,7 @@
 import openai
 import streamlit as st
 import pandas as pd
+import os
 from app_config import model
 from navigation import PAGE_ROUTES
 
@@ -14,7 +15,7 @@ st.set_page_config(
 
 # Ensure the OpenAI API key is configured only once
 if not openai.api_key:
-    openai.api_key = st.secrets.get("OPENAI_API_KEY")
+    openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialise session state for page navigation
 if "page" not in st.session_state:
