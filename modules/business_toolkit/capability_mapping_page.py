@@ -8,7 +8,7 @@ from navigation import render_breadcrumbs
 
 def capability_mapping_page():
     # Breadcrumb navigation as a single line with clickable elements
-    render_breadcrumbs([("🏠 Home", "Home"), ("🔍 Pain Point Toolkit", "Pain Point Toolkit"), ("🎯 Capability Mapping", None)])
+    render_breadcrumbs([("🏠 Home", "Home"), ("🏢 Business Toolkit", "Business Toolkit"), ("🎯 Capability Mapping", None)])
     
     st.markdown("## Pain Point to Capability Mapping")
     st.markdown("Upload pain points and capabilities spreadsheets to create ID-based mappings.")

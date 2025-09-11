@@ -8,7 +8,7 @@ from navigation import render_breadcrumbs
 
 def theme_creation_page():
     # Breadcrumb navigation as a single line with clickable elements
-    render_breadcrumbs([("🏠 Home", "Home"), ("🔍 Pain Point Toolkit", "Pain Point Toolkit"), ("🗂️ Theme & Perspective Mapping", None)])
+    render_breadcrumbs([("🏠 Home", "Home"), ("🏢 Business Toolkit", "Business Toolkit"), ("🗂️ Theme & Perspective Mapping", None)])
     
     st.markdown("## Pain Point Theme & Perspective Mapping")
     st.markdown("Upload a pain points spreadsheet to map each pain point to themes and perspectives.")

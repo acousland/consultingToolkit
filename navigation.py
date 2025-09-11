@@ -56,14 +56,13 @@ PAGE_ROUTES: dict[str, PageFunc] = {}
 
 # Page modules imported below for route mapping
 from modules.home_page import home_page
-from modules.pain_point_toolkit.pain_point_toolkit_page import pain_point_toolkit_page
-from modules.capability_toolkit.capability_toolkit_page import capability_toolkit_page
-from modules.capability_toolkit.capability_description_page import capability_description_page
+from modules.business_toolkit.business_toolkit_page import business_toolkit_page
+from modules.business_toolkit.capability_description_page import capability_description_page
 from modules.applications_toolkit.applications_toolkit_page import applications_toolkit_page
-from modules.pain_point_toolkit.pain_point_extraction_page import pain_point_extraction_page
-from modules.pain_point_toolkit.capability_mapping_page import capability_mapping_page
-from modules.pain_point_toolkit.theme_creation_page import theme_creation_page
-from modules.pain_point_toolkit.pain_point_impact_estimation_page import pain_point_impact_estimation_page
+from modules.business_toolkit.pain_point_extraction_page import pain_point_extraction_page
+from modules.business_toolkit.capability_mapping_page import capability_mapping_page
+from modules.business_toolkit.theme_creation_page import theme_creation_page
+from modules.business_toolkit.pain_point_impact_estimation_page import pain_point_impact_estimation_page
 from modules.applications_toolkit.application_capability_mapping_page import application_capability_mapping_page
 from modules.applications_toolkit.application_categorization_page import application_categorization_page
 from modules.applications_toolkit.logical_application_model_generator_page import logical_application_model_generator_page
@@ -83,8 +82,7 @@ from modules.admin_tool_page import admin_tool_page
 # Dictionary mapping page names to functions
 PAGE_ROUTES: dict[str, PageFunc] = {
     "Home": home_page,
-    "Pain Point Toolkit": pain_point_toolkit_page,
-    "Capability Toolkit": capability_toolkit_page,
+    "Business Toolkit": business_toolkit_page,
     "Applications Toolkit": applications_toolkit_page,
     "Engagement Planning Toolkit": engagement_planning_toolkit_page,
     "Strategy and Motivations Toolkit": strategy_motivations_toolkit_page,

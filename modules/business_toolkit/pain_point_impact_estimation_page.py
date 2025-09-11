@@ -7,7 +7,7 @@ from app_config import model, pain_point_impact_estimation_prompt
 
 def pain_point_impact_estimation_page():
     # Breadcrumb navigation as a single line with clickable elements
-    render_breadcrumbs([("🏠 Home", "Home"), ("🔍 Pain Point Toolkit", "Pain Point Toolkit"), ("📊 Pain Point Impact Estimation", None)])
+    render_breadcrumbs([("🏠 Home", "Home"), ("🏢 Business Toolkit", "Business Toolkit"), ("📊 Pain Point Impact Estimation", None)])
     
     st.markdown("## 📊 Pain Point Impact Estimation")
     st.markdown("_Assess the business impact of identified pain points_")

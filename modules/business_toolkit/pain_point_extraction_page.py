@@ -7,7 +7,7 @@ from navigation import render_breadcrumbs
 
 def pain_point_extraction_page():
     # Breadcrumb navigation as a single line with clickable elements
-    render_breadcrumbs([("🏠 Home", "Home"), ("🔍 Pain Point Toolkit", "Pain Point Toolkit"), ("🔍 Pain Point Extraction", None)])
+    render_breadcrumbs([("🏠 Home", "Home"), ("🏢 Business Toolkit", "Business Toolkit"), ("🔍 Pain Point Extraction", None)])
     
     st.markdown("## Pain Point extraction")
     uploaded_file = st.file_uploader("Choose a file")

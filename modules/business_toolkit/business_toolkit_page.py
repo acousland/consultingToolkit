@@ -1,15 +1,15 @@
 import streamlit as st
 from navigation import render_breadcrumbs
 
-def pain_point_toolkit_page():
+def business_toolkit_page():
     # Breadcrumb navigation as a single line with clickable elements
-    render_breadcrumbs([("🏠 Home", "Home"), ("🔍 Pain Point Toolkit", None)])
+    render_breadcrumbs([("🏠 Home", "Home"), ("🏢 Business Toolkit", None)])
     
-    st.markdown("# 🔍 Pain Point Toolkit")
+    st.markdown("# 🏢 Business Toolkit")
 
     st.markdown("""
-    The Pain Point Toolkit provides a comprehensive workflow for extracting, categorising, and mapping organisational challenges. 
-    Use these tools in sequence to transform raw qualitative data into actionable insights for strategic planning.
+    The Business Toolkit combines comprehensive workflows for analyzing organizational challenges and designing capability frameworks. 
+    Use these tools to transform raw qualitative data into actionable strategic insights and create professional capability descriptions.
     """)
     
     st.markdown("---")
@@ -120,6 +120,33 @@ def pain_point_toolkit_page():
         with col2:
             if st.button("Launch Tool", key="launch_capability_mapping", use_container_width=True, type="primary"):
                 st.session_state.page = "Pain Point to Capability Mapping"
+                st.rerun()
+    
+    st.markdown("---")
+    
+    # Tool 5: Capability Description Generation
+    with st.container():
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown("### 5. 📝 Capability Description Generation")
+            st.markdown("""
+            Generate professional capability descriptions using AI-powered writing.
+            
+            • Upload capability names and existing descriptions
+            • AI creates polished, single-sentence capability descriptions
+            • Australian English with active voice and professional tone
+            • Consistent style with varied, sophisticated vocabulary
+            • Track capability IDs for easy integration with other systems
+            • Export professionally formatted descriptions as Excel
+            
+            **Perfect for:** Strategy consultants, business analysts, and capability architects 
+            developing professional capability frameworks and strategic documentation.
+            """)
+        
+        with col2:
+            if st.button("Launch Tool", key="launch_capability_desc", use_container_width=True, type="primary"):
+                st.session_state.page = "Capability Description Generation"
                 st.rerun()
     
     st.markdown("---")

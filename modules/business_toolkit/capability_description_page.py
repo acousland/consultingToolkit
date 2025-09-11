@@ -7,7 +7,7 @@ from navigation import render_breadcrumbs
 
 def capability_description_page():
     # Breadcrumb navigation as a single line with clickable elements
-    render_breadcrumbs([("🏠 Home", "Home"), ("📝 Capability Toolkit", "Capability Toolkit"), ("📝 Capability Description Generation", None)])
+    render_breadcrumbs([("🏠 Home", "Home"), ("🏢 Business Toolkit", "Business Toolkit"), ("📝 Capability Description Generation", None)])
     
     
     st.markdown("## Capability Description Generation")
