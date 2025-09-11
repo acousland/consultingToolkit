@@ -477,7 +477,7 @@ Reasoning: [Provide a comprehensive explanation of your scoring decision, addres
                         for i, r in enumerate(results)
                     ])
                     
-                    # Display with color coding
+                    # Display with colour coding
                     def score_color(score):
                         if score >= 70:
                             return 'background-color: #d4edda'  # Green (High potential)

@@ -8,7 +8,7 @@ def business_toolkit_page():
     st.markdown("# 🏢 Business Toolkit")
 
     st.markdown("""
-    The Business Toolkit combines comprehensive workflows for analyzing organizational challenges and designing capability frameworks. 
+    The Business Toolkit combines comprehensive workflows for analysing organisational challenges and designing capability frameworks. 
     Use these tools to transform raw qualitative data into actionable strategic insights and create professional capability descriptions.
     """)
     

@@ -14,10 +14,10 @@ def home_page():
     with col1:
         # Business Toolkit Overview  
         st.markdown("## 🏢 **Business Toolkit**")
-        st.markdown("_Analyze organizational challenges and design capability frameworks_")
+        st.markdown("_Analyse organisational challenges and design capability frameworks_")
         
         st.markdown("""
-        **Perfect for:** Consultants analyzing organizational challenges, extracting insights from qualitative data, 
+        **Perfect for:** Consultants analysing organisational challenges, extracting insights from qualitative data, 
         connecting problems to capabilities, and developing professional capability frameworks.
         
         **Tools included:**
@@ -67,14 +67,14 @@ def home_page():
         
         st.markdown("""
         **Perfect for:** Data consultants, data architects, AI specialists, and business analysts working on data strategy, 
-        information architecture, data modeling, and AI implementation initiatives.
+        information architecture, data modelling, and AI implementation initiatives.
         
         **Tools included:**
         • Conceptual Data Model Generator
         • Data-Application Mapping
         • AI Use Case Customiser
         
-        **Typical workflow:** Analyze Requirements → Generate Data Models → Document Relationships → Define Business Rules → Assess AI Opportunities
+        **Typical workflow:** Analyse Requirements → Generate Data Models → Document Relationships → Define Business Rules → Assess AI Opportunities
         """)
         
         if st.button("Enter Data, Information, and AI Toolkit", key="enter_data_information_toolkit", use_container_width=True, type="primary"):

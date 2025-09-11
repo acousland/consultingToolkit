@@ -216,7 +216,7 @@ def data_application_mapping_page():
                         st.dataframe(filtered_apps[preview_cols], use_container_width=True)
         
         st.markdown("### Step 4: Generate Data-Application Mappings")
-        st.markdown("Process all applications (or filtered subset) to analyze which data entities are relevant to each.")
+        st.markdown("Process all applications (or filtered subset) to analyse which data entities are relevant to each.")
         
         # Prepare applications for processing
         applications = []

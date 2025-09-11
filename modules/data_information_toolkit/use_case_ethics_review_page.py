@@ -22,7 +22,7 @@ def use_case_ethics_review_page():
     - **Deontological Analysis** (Kantian ethics): Rule-based evaluation considering laws, policies, and universal principles
     - **Utilitarian Analysis**: Cost-benefit evaluation with quantified pros and cons
     - **Social Contract Analysis**: Assessment of implicit and explicit social agreements
-    - **Virtue Ethics Analysis**: Evaluation of character and organizational virtue implications
+    - **Virtue Ethics Analysis**: Evaluation of character and organisational virtue implications
     """)
     
     st.markdown("---")
@@ -40,7 +40,7 @@ def use_case_ethics_review_page():
 - What are the intended outcomes?
 - How will it be implemented?
 - What are the potential impacts on different groups?
-- Any relevant context about your organization or industry...""",
+- Any relevant context about your organisation or industry...""",
         height=200,
         help="The more detail you provide, the more comprehensive and accurate the ethical analysis will be."
     )
@@ -61,8 +61,8 @@ def use_case_ethics_review_page():
                 st.markdown("### 1. 📜 Deontological Analysis (Kantian Ethics)")
                 st.markdown("*Rule-based evaluation considering laws, policies, and universal principles*")
                 
-                with st.spinner("Analyzing rules, laws, and universal principles..."):
-                    kantian_prompt = f"""You are an expert in deontological ethics and legal compliance. Analyze the following use case from a Kantian perspective, focusing on rules, laws, and universal principles.
+                with st.spinner("Analysing rules, laws, and universal principles..."):
+                    kantian_prompt = f"""You are an expert in deontological ethics and legal compliance. Analyse the following use case from a Kantian perspective, focusing on rules, laws, and universal principles.
 
 Use Case:
 {use_case_description}
@@ -70,12 +70,12 @@ Use Case:
 Conduct a thorough deontological analysis covering:
 
 1. **Legal Compliance**:
-   - What laws might this use case potentially violate? (Consider privacy laws, discrimination laws, labor laws, etc.)
+   - What laws might this use case potentially violate? (Consider privacy laws, discrimination laws, labour laws, etc.)
    - Are there any regulatory requirements that need to be considered?
-   - What licenses or permissions might be required?
+   - What licences or permissions might be required?
 
 2. **Policy Violations**:
-   - What organizational policies might be affected?
+   - What organisational policies might be affected?
    - Are there industry standards or codes of conduct that apply?
    - What professional ethical guidelines are relevant?
 
@@ -86,7 +86,7 @@ Conduct a thorough deontological analysis covering:
 
 4. **Rights and Duties Analysis**:
    - What rights of individuals or groups might be affected?
-   - What duties does the organization have to various stakeholders?
+   - What duties does the organisation have to various stakeholders?
    - Are there conflicting duties that need to be balanced?
 
 Provide a detailed, objective analysis. Do not assume the use case is inherently good or bad - evaluate based on the ethical framework."""
@@ -100,8 +100,8 @@ Provide a detailed, objective analysis. Do not assume the use case is inherently
                 st.markdown("### 2. ⚖️ Utilitarian Analysis")
                 st.markdown("*Cost-benefit evaluation with quantified pros and cons*")
                 
-                with st.spinner("Analyzing costs, benefits, and overall utility..."):
-                    utilitarian_prompt = f"""You are an expert in utilitarian ethics and cost-benefit analysis. Analyze the following use case from a utilitarian perspective, focusing on maximizing overall well-being and happiness.
+                with st.spinner("Analysing costs, benefits, and overall utility..."):
+                    utilitarian_prompt = f"""You are an expert in utilitarian ethics and cost-benefit analysis. Analyse the following use case from a utilitarian perspective, focusing on maximising overall well-being and happiness.
 
 Use Case:
 {use_case_description}
@@ -111,7 +111,7 @@ Conduct a comprehensive utilitarian analysis:
 1. **Identify All Stakeholders**:
    - Who will be affected by this use case?
    - Consider direct and indirect stakeholders
-   - Include individuals, groups, organizations, and society
+   - Include individuals, groups, organisations, and society
 
 2. **Detailed Pros Analysis**:
    List all potential positive outcomes and assign utilitarian points (1-10 scale):
@@ -162,8 +162,8 @@ Be objective and thorough. Consider both short-term and long-term consequences."
                 st.markdown("### 3. 🤝 Social Contract Analysis")
                 st.markdown("*Assessment of implicit and explicit social agreements*")
                 
-                with st.spinner("Analyzing social contracts and agreements..."):
-                    social_contract_prompt = f"""You are an expert in social contract theory and organizational sociology. Analyze the following use case from a social contract perspective, examining both explicit and implicit agreements.
+                with st.spinner("Analysing social contracts and agreements..."):
+                    social_contract_prompt = f"""You are an expert in social contract theory and organisational sociology. Analyse the following use case from a social contract perspective, examining both explicit and implicit agreements.
 
 Use Case:
 {use_case_description}
@@ -180,12 +180,12 @@ Conduct a thorough social contract analysis:
    - What unwritten expectations do stakeholders have?
    - What social norms and conventions apply?
    - What implicit trust relationships exist?
-   - What are the unstated assumptions about how the organization operates?
+   - What are the unstated assumptions about how the organisation operates?
 
 3. **Stakeholder Expectations Analysis**:
    - **Employees**: What do they expect in terms of job security, privacy, fair treatment?
    - **Customers**: What implicit promises about service, privacy, and value exist?
-   - **Community**: What does society expect from the organization?
+   - **Community**: What does society expect from the organisation?
    - **Shareholders/Investors**: What implicit agreements about responsible business practices exist?
    - **Partners**: What mutual expectations and dependencies exist?
 
@@ -196,9 +196,9 @@ Conduct a thorough social contract analysis:
    - What social norms might be challenged?
 
 5. **Legitimacy and Authority**:
-   - Does the organization have the social legitimacy to implement this use case?
+   - Does the organisation have the social legitimacy to implement this use case?
    - What authority or permission from stakeholders might be needed?
-   - How might this affect the organization's social license to operate?
+   - How might this affect the organisation's social license to operate?
 
 6. **Potential for Renegotiation**:
    - Can affected social contracts be renegotiated fairly?
@@ -214,10 +214,10 @@ Provide an objective analysis of how this use case aligns with or challenges exi
                 
                 # Analysis 4: Virtue Ethics Analysis
                 st.markdown("### 4. 🌟 Virtue Ethics Analysis")
-                st.markdown("*Evaluation of character and organizational virtue implications*")
+                st.markdown("*Evaluation of character and organisational virtue implications*")
                 
-                with st.spinner("Analyzing virtue and character implications..."):
-                    virtue_ethics_prompt = f"""You are an expert in virtue ethics and organizational character. Analyze the following use case from a virtue ethics perspective, focusing on character traits and moral excellence.
+                with st.spinner("Analysing virtue and character implications..."):
+                    virtue_ethics_prompt = f"""You are an expert in virtue ethics and organisational character. Analyse the following use case from a virtue ethics perspective, focusing on character traits and moral excellence.
 
 Use Case:
 {use_case_description}
@@ -232,13 +232,13 @@ Conduct a comprehensive virtue ethics analysis:
    - **Courage**: Does this require and demonstrate moral courage?
    - **Temperance/Moderation**: Does this show restraint and balance?
    - **Wisdom/Prudence**: Does this demonstrate good judgment and practical wisdom?
-   - **Respect/Dignity**: Does this honor the dignity of all people involved?
+   - **Respect/Dignity**: Does this honour the dignity of all people involved?
 
 2. **Organizational Character**:
-   - What character traits would this use case cultivate in the organization?
-   - How would this affect the organization's reputation and identity?
+   - What character traits would this use case cultivate in the organisation?
+   - How would this affect the organisation's reputation and identity?
    - What kind of company would implement this use case?
-   - How does this align with stated organizational values?
+   - How does this align with stated organisational values?
 
 3. **Individual Character Development**:
    - How might this use case affect the character of employees involved?
@@ -246,8 +246,8 @@ Conduct a comprehensive virtue ethics analysis:
    - Does it promote moral growth or moral compromise?
 
 4. **Role Model Test**:
-   - Would a virtuous organization want to be known for this use case?
-   - Could this organization serve as a positive example to others?
+   - Would a virtuous organisation want to be known for this use case?
+   - Could this organisation serve as a positive example to others?
    - What would stakeholders think if this became widely known?
 
 5. **Virtue vs. Vice Analysis**:
@@ -261,12 +261,12 @@ Conduct a comprehensive virtue ethics analysis:
 
 6. **Excellence and Flourishing**:
    - Does this contribute to human flourishing (eudaimonia)?
-   - How does this promote or hinder excellence in the organization?
+   - How does this promote or hinder excellence in the organisation?
    - What is the impact on the common good?
 
 7. **Virtue Ethics Conclusion**:
    - Would a virtuous agent pursue this use case?
-   - How can the organization embody virtue while implementing this?
+   - How can the organisation embody virtue while implementing this?
    - What modifications might enhance virtue alignment?
 
 Provide an objective assessment focused on character and moral excellence."""

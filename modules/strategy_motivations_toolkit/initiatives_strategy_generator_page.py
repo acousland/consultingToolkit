@@ -331,7 +331,7 @@ Return your analysis in this exact format:
 
 **OPPORTUNITIES**
 • [Opportunity 1: External opportunities this strategic activity can capitalize on]
-• [Opportunity 2: Market trends or conditions that favor this activity]
+• [Opportunity 2: Market trends or conditions that favour this activity]
 • [Opportunity 3: Potential synergies with other strategic activities]
 • [Opportunity 4: Growth or expansion possibilities]
 

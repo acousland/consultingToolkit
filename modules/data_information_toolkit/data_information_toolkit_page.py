@@ -2,18 +2,18 @@ import streamlit as st
 from navigation import render_breadcrumbs
 
 def data_information_toolkit_page():
-    """Data, Information, and AI Toolkit page with various data modeling, analysis, and AI tools."""
+    """Data, Information, and AI Toolkit page with various data modelling, analysis, and AI tools."""
     
     # Breadcrumbs
     render_breadcrumbs([("Home", "Home"), ("Data, Information, and AI Toolkit", None)])
     
     st.markdown("## Data, Information, and AI Toolkit")
-    st.markdown("Comprehensive tools for data modeling, analysis, information architecture, and AI solutions.")
+    st.markdown("Comprehensive tools for data modelling, analysis, information architecture, and AI solutions.")
     
     # Introduction section
     st.markdown("""
     This toolkit provides essential tools for data consultants, data architects, AI specialists, and business analysts 
-    working on data strategy, information architecture, data modeling, and AI implementation initiatives.
+    working on data strategy, information architecture, data modelling, and AI implementation initiatives.
     """)
     
     st.markdown("---")

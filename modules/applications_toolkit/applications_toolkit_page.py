@@ -51,7 +51,7 @@ def applications_toolkit_page():
         with col1:
             st.markdown("### 2. 🏛️ Logical Application Model Generator")
             st.markdown("""
-            Generate a logical application model by categorizing applications into high-level architectural groups.
+            Generate a logical application model by categorising applications into high-level architectural groups.
             
             • Upload company context and application portfolio data
             • AI creates logical categories based on architectural purpose (e.g., Digital Experience, Data Management)
@@ -92,7 +92,7 @@ def applications_toolkit_page():
             """)
         
         with col2:
-            if st.button("Launch Tool", key="launch_app_categorization", use_container_width=True, type="primary"):
+            if st.button("Launch Tool", key="launch_app_categorisation", use_container_width=True, type="primary"):
                 st.session_state.page = "Application Categorisation"
                 st.rerun()
     

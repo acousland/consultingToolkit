@@ -16,7 +16,7 @@ def logical_application_model_generator_page():
     st.markdown("# 🏛️ Logical Application Model Generator")
     
     st.markdown("""
-    Generate a logical application model by categorizing applications into high-level architectural groups 
+    Generate a logical application model by categorising applications into high-level architectural groups 
     based on their purpose and functionality. This creates a taxonomy of applications based on their 
     architectural role (e.g., Digital Experience Platform, Customer Data Platform, Data Integration Pipeline Tool).
     """)
@@ -25,7 +25,7 @@ def logical_application_model_generator_page():
     
     # Company Context Section
     st.markdown("## 📋 Step 1: Company Context")
-    st.markdown("Provide context about the organization to help generate relevant application categories.")
+    st.markdown("Provide context about the organisation to help generate relevant application categories.")
     
     col1, col2 = st.columns(2)
     
@@ -35,7 +35,7 @@ def logical_application_model_generator_page():
             "Upload company dossier (PDF, TXT, Word, JSON, or XML)",
             type=['pdf', 'txt', 'docx', 'json', 'xml'],
             key="company_dossier",
-            help="Upload a document containing company information, business context, or organizational overview"
+            help="Upload a document containing company information, business context, or organisational overview"
         )
         
         if company_file:
@@ -45,7 +45,7 @@ def logical_application_model_generator_page():
         st.markdown("### Company Description")
         company_description = st.text_area(
             "Enter company description:",
-            placeholder="Describe the organization, industry, business model, key operations, etc...",
+            placeholder="Describe the organisation, industry, business model, key operations, etc...",
             height=150,
             help="Provide context about the company's business, industry, and key operational areas"
         )
@@ -54,7 +54,7 @@ def logical_application_model_generator_page():
     
     # Applications Data Section
     st.markdown("## 📊 Step 2: Applications Data")
-    st.markdown("Upload or enter information about the applications to be categorized.")
+    st.markdown("Upload or enter information about the applications to be categorised.")
     
     # File upload option
     st.markdown("### Upload Applications File")
@@ -186,7 +186,7 @@ def logical_application_model_generator_page():
             )
         
         if st.button("🚀 Generate Logical Application Model", type="primary"):
-            with st.spinner("Analyzing applications and generating logical model..."):
+            with st.spinner("Analysing applications and generating logical model..."):
                 try:
                     # Prepare applications data with concatenated descriptions
                     apps_data = []
@@ -220,9 +220,9 @@ def logical_application_model_generator_page():
                         context_text = f"Company Context: {company_description}\\n\\n"
                     
                     # Create prompt
-                    prompt = f"""You are a senior enterprise architect specializing in application portfolio management and logical application modeling.
+                    prompt = f"""You are a senior enterprise architect specialising in application portfolio management and logical application modelling.
 
-{context_text}Please analyze the following applications and create a logical application model with the following outputs:
+{context_text}Please analyse the following applications and create a logical application model with the following outputs:
 
 1. **High-Level Application Categories**: Create {num_categories} logical categories that group applications by their architectural purpose and functionality (e.g., "Digital Experience Platforms", "Customer Data Management", "Integration & APIs", "Analytics & Business Intelligence", etc.)
 
@@ -232,7 +232,7 @@ def logical_application_model_generator_page():
 
 4. **Architectural Insights**: Highlight any gaps, overlaps, or architectural observations
 
-Applications to analyze:
+Applications to analyse:
 {apps_text}
 
 Format your response as:
